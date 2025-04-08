@@ -37,8 +37,8 @@ def main():
     # ============================================================
     # === 1) Zwei Bilder laden (BGR-Format) und nach RGB wandeln ==
     # ============================================================
-    bild1_bgr = cv2.imread(r"C:\Users\moham\OneDrive\Dokumente\BigData\live_coding\Test_bilder\peacock-90051_1920.jpg")
-    bild2_bgr = cv2.imread(r"C:\Users\moham\OneDrive\Dokumente\BigData\live_coding\Test_bilder\pexels-photo-1159577.jpeg")
+    bild1_bgr = cv2.imread(r"C:\Users\moham\OneDrive\Dokumente\BigData\Test_bilder\hummingbird-2139278_1920.jpg")
+    bild2_bgr = cv2.imread(r"C:\Users\moham\OneDrive\Dokumente\BigData\Test_bilder\puffin-5404178_1920.jpg")
     
     if bild1_bgr is None or bild2_bgr is None:
         print("Fehler: Mindestens eines der beiden Bilder wurde nicht gefunden.")
