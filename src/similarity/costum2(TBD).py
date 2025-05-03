@@ -1,0 +1,1 @@
+#compare images using colors (TBD)
