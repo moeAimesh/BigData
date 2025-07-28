@@ -1,0 +1,11 @@
+{
+    "sqltools.useNodeRuntime": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:fork_repo_local}/data/database.db",
+            "name": "MySQLiteDB"
+        }
+    ]
+}
