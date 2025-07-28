@@ -3,7 +3,6 @@ import os
 def image_generator(root_dir, valid_exts=(".jpg", ".jpeg", ".png")):
     """
     Generator, der rekursiv durch alle Unterordner läuft
-    und Bildpfade liefert.
 
     Args:
         root_dir (str): Hauptverzeichnis mit Bildern und Unterordnern
