@@ -7,5 +7,8 @@
             "database": "${workspaceFolder:fork_repo_local}/data/database.db",
             "name": "MySQLiteDB"
         }
-    ]
+    ],
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "python-envs.pythonProjects": []
 }
