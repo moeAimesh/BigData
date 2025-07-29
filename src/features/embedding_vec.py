@@ -1,25 +1,45 @@
 import torch
-from torchvision import models, transforms
+import numpy as np
+import cv2
+from torchvision.models import resnet18, ResNet18_Weights
 
-#Gerät auswählen (CUDA, wenn verfügbar)
+# ========== SETUP ==========
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-#Modell laden und auf GPU verschieben
-resnet = models.resnet18(pretrained=True)
-resnet = torch.nn.Sequential(*list(resnet.children())[:-1])  # ohne FC-Schicht
+weights = ResNet18_Weights.DEFAULT
+resnet = resnet18(weights=weights)
+resnet = torch.nn.Sequential(*list(resnet.children())[:-1])  # Ohne FC-Schicht
 resnet.eval().to(device)
 
-#Transformation
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                         std=[0.229, 0.224, 0.225])
-])
+# ImageNet Normalisierung
+mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
 
-#Funktion zum Berechnen des Embeddings mit GPU-Support
-def calc_embedding(image):
-    img_tensor = transform(image).unsqueeze(0).to(device)  # [1, 3, 224, 224]
+# ========== PREPROCESS ==========
+def preprocess_image_np(img):
+    """
+    Schnelle Bildvorverarbeitung mit OpenCV + NumPy:
+    - Resize
+    - Normalisieren [0, 1]
+    - Standardisieren (ImageNet)
+    - in Torch-Tensor (CHW) umwandeln
+    """
+    img = cv2.resize(img, (224, 224), interpolation=cv2.INTER_LINEAR)
+    img = np.transpose(img, (2, 0, 1)).astype(np.float32) / 255.0  # HWC → CHW + Normalisierung
+    img = (img - mean[:, None, None]) / std[:, None, None]         # Broadcasting auf CHW
+    return torch.from_numpy(img)
+
+
+# ========== EXTRACT ==========
+def extract_embeddings(batch_imgs_np):
+    """
+    Wandelt eine Liste von NumPy-Bildern in Embedding-Vektoren (1 x 512) um.
+    """
+    batch_tensor = torch.stack([preprocess_image_np(img) for img in batch_imgs_np])
+    batch_tensor = batch_tensor.to(device)
+
     with torch.no_grad():
-        features = resnet(img_tensor)  # [1, 512, 1, 1]
-    return features.view(-1).cpu().numpy()  # zurück auf CPU für Kompatibilität
+        features = resnet(batch_tensor)  # [B, 512, 1, 1]
+        features = features.squeeze(-1).squeeze(-1).cpu().numpy()  # [B, 512]
+
+    return features

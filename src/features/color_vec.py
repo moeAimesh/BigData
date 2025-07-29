@@ -1,11 +1,11 @@
-#use Loader.py to load images and extract feature vektores from them
-#then save the vektor in database.db 
 import numpy as np
+import cv2
 
-
-def calc_histogram(image):
-    arr = np.array(image.convert("RGB")).reshape(-1, 3)
-    hist_r, _ = np.histogram(arr[:, 0], bins=32, range=(0, 256), density=True)
-    hist_g, _ = np.histogram(arr[:, 1], bins=32, range=(0, 256), density=True)
-    hist_b, _ = np.histogram(arr[:, 2], bins=32, range=(0, 256), density=True)
-    return np.concatenate([hist_r, hist_g, hist_b])
+def calc_histogram(img):
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    hist = []
+    for i in range(3):  # R, G, B
+        h = cv2.calcHist([img_rgb], [i], None, [32], [0, 256])
+        h = cv2.normalize(h, h).flatten()
+        hist.append(h)
+    return np.concatenate(hist)
