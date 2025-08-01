@@ -9,3 +9,4 @@ def calc_histogram(img):
         h = cv2.normalize(h, h).flatten()
         hist.append(h)
     return np.concatenate(hist)
+

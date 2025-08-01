@@ -1,12 +1,2 @@
-128 ✓ gespeichert
-🕒 Letzter Batch-Embedding dauerte: 0.07 Sekunden
-30 ✓ letzter Batch gespeichert
-[2025-07-29 18:36:58.759194] ✓ Fertig
-128 ✓ gespeichert
-🕒 Letzter Batch-Embedding dauerte: 0.08 Sekunden
-30 ✓ letzter Batch gespeichert
-[2025-07-29 18:54:49.297972] ✓ Fertig
-128 ✓ gespeichert
-🕒 Letzter Batch-Embedding dauerte: 0.07 Sekunden
-30 ✓ letzter Batch gespeichert
-[2025-07-29 18:55:08.853386] ✓ Fertig
+letzter Batch gespeichert
+[2025-08-01 18:11:07.179147] ✓ Fertig
