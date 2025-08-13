@@ -36,3 +36,30 @@ rolling_avg = np.convolve(sizes_global, np.ones(window)/window, mode='valid')
 
 # Gesamtdurchschnitt aller Bilder
 mean_all = np.mean(sizes_global)
+
+plt.figure(figsize=(14, 6))
+x = np.arange(len(sizes_global))
+
+# Rohdaten
+plt.plot(x, sizes_global, label='Bildgröße (MB)', alpha=0.3)
+
+# Gleitender Durchschnitt
+plt.plot(np.arange(window-1, len(sizes_global)), rolling_avg,
+         color='orange', label=f'Ø über {window} Bilder')
+
+# Gesamtdurchschnitt als Linie
+plt.axhline(mean_all, color='r', linestyle='--', label='Gesamt-Ø')
+
+# Vertikale Linien zur Trennung der Tables
+cumsum = np.cumsum(table_boundaries)
+for boundary in cumsum[:-1]:
+    plt.axvline(boundary, color='grey', linestyle=':', alpha=0.5)
+
+# Achsen + Titel
+plt.xlabel('Globaler Bildindex')
+plt.ylabel('Dateigröße (MB)')
+plt.title('Dateigrößenverlauf über alle image_features_part_ Tabellen')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
