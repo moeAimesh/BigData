@@ -27,3 +27,6 @@ for h in rows:
 
 # Matrix: Zeilen = Bilder, Spalten = Bits
 hash_matrix = np.stack(hash_bits)  # Shape: [N, B]
+
+# === Häufigkeit pro Bit ===
+bit_means = np.mean(hash_matrix, axis=0)  # Mittelwert pro Spalte
