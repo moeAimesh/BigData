@@ -18,3 +18,15 @@ cursor.execute("""
     ORDER BY name
 """)
 tables = [row[0] for row in cursor.fetchall()]
+
+sizes_global = []     # alle Dateigrößen (in MB)
+table_boundaries = [] # Anzahl Bilder pro Tabelle
+
+for table in tables:
+    cursor.execute(f"SELECT file_size FROM {table} ORDER BY id")
+    # Bytes → MB umrechnen
+    sizes = [row[0] / (1024 * 1024) for row in cursor.fetchall()]
+    table_boundaries.append(len(sizes))
+    sizes_global.extend(sizes)
+
+conn.close()
