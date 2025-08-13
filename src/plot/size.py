@@ -30,3 +30,9 @@ for table in tables:
     sizes_global.extend(sizes)
 
 conn.close()
+# Gleitender Durchschnitt mit Fenstergröße 1000
+window = 1000
+rolling_avg = np.convolve(sizes_global, np.ones(window)/window, mode='valid')
+
+# Gesamtdurchschnitt aller Bilder
+mean_all = np.mean(sizes_global)
