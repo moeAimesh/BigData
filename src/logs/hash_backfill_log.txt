@@ -1,0 +1,22 @@
+[INFO] Added column dhash to image_features_part_1
+[INFO] Added column phash to image_features_part_1
+[INFO] Fertig für image_features_part_1
+[INFO] Added column dhash to image_features_part_2
+[INFO] Added column phash to image_features_part_2
+[INFO] Fertig für image_features_part_2
+[INFO] Added column dhash to image_features_part_3
+[INFO] Added column phash to image_features_part_3
+[INFO] Fertig für image_features_part_3
+[INFO] Added column dhash to image_features_part_4
+[INFO] Added column phash to image_features_part_4
+[INFO] Fertig für image_features_part_4
+[INFO] Added column dhash to image_features_part_5
+[INFO] Added column phash to image_features_part_5
+[INFO] Fertig für image_features_part_5
+[INFO] Added column dhash to image_features_part_6
+[INFO] Added column phash to image_features_part_6
+[INFO] Fertig für image_features_part_6
+[INFO] Added column dhash to image_features_part_7
+[INFO] Added column phash to image_features_part_7
+[INFO] Fertig für image_features_part_7
+[OK] Backfill abgeschlossen. Insgesamt aktualisiert: 359754

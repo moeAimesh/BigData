@@ -1,0 +1,264 @@
+# ========== CONFIG ==========
+DB_PATH = r"Z:\CODING\UNI\BIG_DATA\data\database.db"
+PHOTO_FOLDER = r"D:\data\image_data"
+EMBEDDING_DIR = r"Z:\CODING\UNI\BIG_DATA\embeddings"
+EMBEDDING_PCA_DIR = r"Z:\CODING\UNI\BIG_DATA\embeddings_pca"
+
+MAX_IMAGE_SIZE_BEFORE_REDUCE = 4 * 1024 * 1024  # 4 MB
+REDUCED_BATCH_SIZE = 50
+INITIAL_BATCH_SIZE = 500
+IMAGES_PER_TABLE = 20000
+
+TABLE_PREFIX = "image_features_part_"
+LOG_FILE = "verarbeitung_log.txt"
+
+Path(EMBEDDING_DIR).mkdir(parents=True, exist_ok=True)
+Path(EMBEDDING_PCA_DIR).mkdir(parents=True, exist_ok=True)
+
+# ========== DB ==========
+conn = sqlite3.connect(DB_PATH, isolation_level=None)
+cursor = conn.cursor()
+cursor.execute("PRAGMA journal_mode=OFF;")
+cursor.execute("PRAGMA synchronous=OFF;")
+
+
+#funktion to determine batch size based on image size dynamically
+def determine_batch_size(chunk_paths, logfile):
+    large_image_found = any(os.path.getsize(path) > MAX_IMAGE_SIZE_BEFORE_REDUCE for _, path in chunk_paths)
+    if large_image_found:
+        log_debug(logfile, "[DEBUG] Große Bilder erkannt – Batchgröße reduziert.")
+    return REDUCED_BATCH_SIZE if large_image_found else INITIAL_BATCH_SIZE
+
+
+
+
+def log_debug(logfile, msg):
+    logfile.write(msg + "\n")
+
+def create_table_if_not_exists(table_name):
+    cursor.execute(f'''
+        CREATE TABLE IF NOT EXISTS {table_name} (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        filename TEXT NOT NULL,
+        path TEXT NOT NULL,
+        color_hist TEXT,
+        embedding_path TEXT,
+        image_hash TEXT,
+        resolution TEXT,
+        file_size INTEGER,
+        pca_embedding TEXT,
+        umap_x REAL,
+        umap_y REAL
+    )
+    ''')
+
+
+def save_batch_to_db(entries, logfile, table_name):
+    log_debug(logfile, f"[DEBUG] Speichere {len(entries)} Einträge in {table_name}...")
+    start = time.time()
+    cursor.executemany(f"""
+        INSERT INTO {table_name}
+        (filename, path, color_hist, embedding_path, image_hash, resolution, file_size,
+         pca_embedding, umap_x, umap_y)
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, entries)
+    end = time.time()
+    log_debug(logfile, f"[DEBUG] DB-Speicherung dauerte {round(end-start,2)} Sekunden.")
+
+def prepare_image_features(filename, path, logfile):
+    try:
+        img = fast_load(path)
+        color_hist = calc_histogram(img)
+        img_hash = calc_hash(img)
+        resolution = f"{img.shape[1]}x{img.shape[0]}"
+        file_size = os.path.getsize(path)
+        log_debug(logfile, f"[DEBUG] Bild geladen: {filename}, Größe: {resolution}, Dateigröße: {file_size}")
+        return (filename, path, img, color_hist, img_hash, resolution, file_size)
+    except Exception as e:
+        tb = traceback.format_exc()
+        log_debug(logfile, f"[ERROR] Fehler bei {filename}: {e}")
+        return (filename, path, None, None, None, None, None, f"{e} | Traceback:\n{tb}")
+
+def print_resource_usage(stage, logfile):
+    process = psutil.Process(os.getpid())
+    mem = process.memory_info().rss / (1024 ** 2)
+    cpu = process.cpu_percent(interval=0.1)
+    log_debug(logfile, f"[RESOURCE] {stage} | RAM: {mem:.2f} MB | CPU: {cpu:.2f}%")
+
+def main():
+    tracemalloc.start()
+    import multiprocessing as mp
+    mp.set_start_method('spawn', force=True)
+    logfile = open(LOG_FILE, "a", encoding="utf-8")
+
+    print_resource_usage("Start", logfile)
+    logfile.write(f"[{datetime.now()}] [DEBUG] Start Hauptfunktion\n")
+
+    dummy_img = np.zeros((10, 10, 3), dtype=np.uint8)
+    _ = calc_hash(dummy_img)
+    _ = calc_histogram(dummy_img)
+    log_debug(logfile, "[DEBUG] Numba warm-up abgeschlossen.")
+
+    image_paths = [entry for entry in image_generator(PHOTO_FOLDER)] # --> nur für Anzahl der Bilder 
+    
+    total_images = len(image_paths)
+    log_debug(logfile, f"[DEBUG] {total_images} Bilder gefunden ")
+    del image_paths  # Speicher freigeben nach der Zählung 
+    
+    image_gen = image_generator(PHOTO_FOLDER)
+
+    total_processed = 0
+    table_id = 1
+    current_table_name = f"{TABLE_PREFIX}{table_id}"
+    create_table_if_not_exists(current_table_name)
+    table_embeddings = []
+    table_ids        = []
+    batch_counter = 1
+
+    pbar = tqdm(total=total_images, desc="Verarbeitung", unit="Bild")
+
+    while True:
+        chunk_candidate = []
+        try:
+            for _ in range(INITIAL_BATCH_SIZE):
+                chunk_candidate.append(next(image_gen))
+        except StopIteration:
+            if not chunk_candidate:
+                break  # Generator fertig
+        if not chunk_candidate:
+            break
+         
+        # Dynamisch die tatsächliche Batchgröße ermitteln
+        actual_batch_size = determine_batch_size(chunk_candidate, logfile)
+
+        # Verwende nun nur so viele Bilder wie nötig
+        chunk = chunk_candidate[:actual_batch_size]
+
+
+
+        log_debug(logfile, f"[DEBUG] Starte Batch {batch_counter} mit {len(chunk)} Bildern in Tabelle {current_table_name}.")
+
+
+        
+        # 🟢 Hier BATCH-WEISE existierende Bilder prüfen
+        batch_filenames = [f for f, _ in chunk]
+        placeholders = ",".join("?" for _ in batch_filenames)
+
+        cursor.execute(f"""
+        SELECT filename FROM {current_table_name}
+        WHERE filename IN ({placeholders})
+        """, batch_filenames)
+
+        existing_in_batch = set(row[0] for row in cursor.fetchall())
+
+        # Nur neue Bilder
+        filtered_chunk = [(f, p) for f, p in chunk if f not in existing_in_batch]
+
+        if not filtered_chunk:
+            log_debug(logfile, f"[DEBUG] Batch {batch_counter} übersprungen – alle Bilder in DB.")
+            continue
+
+        batch_meta = []
+        batch_images = []
+
+        batch_start = time.time()
+        for fname, path in filtered_chunk:
+            result = prepare_image_features(fname, path, logfile)
+            if len(result) == 8:
+                _, _, _, _, _, _, _, err = result
+                logfile.write(f"{fname} ❌ {err}\n")
+                log_debug(logfile, f"[ERROR] Fehler bei Bild {fname}: {err}")
+                pbar.update(1)
+                continue
+
+            filename, path, img, hist, img_hash, resolution, size = result
+            batch_meta.append((filename, path, hist, img_hash, resolution, size))
+            batch_images.append(img)
+            pbar.update(1)
+
+        batch_end = time.time()
+        log_debug(logfile, f"[DEBUG] Batch Feature Extraktion dauerte {round(batch_end-batch_start,2)} Sekunden.")
+        print_resource_usage("Nach Feature Extraktion", logfile)
+
+
+        log_debug(logfile, f"[DEBUG] Extrahiere Embeddings für Batch...")
+        embs = extract_embeddings(batch_images)
+        log_debug(logfile, f"[DEBUG] Embeddings extrahiert. Form: {np.array(embs).shape}")
+
+        n_components = min(100, len(batch_images))
+        log_debug(logfile, f"[DEBUG] Starte PCA mit {n_components} Komponenten...")
+        pca = PCA(n_components=n_components)
+        embs_pca = pca.fit_transform(embs)
+        log_debug(logfile, f"[DEBUG] PCA abgeschlossen. Shape: {embs_pca.shape}")
+
+
+        for meta, emb, emb_pca in zip(batch_meta, embs, embs_pca):
+            filename, path, hist, img_hash, resolution, size = meta
+            hist_str = ",".join([str(round(v, 6)) for v in hist])
+            emb_path = os.path.join(EMBEDDING_DIR, f"{filename}.npy")
+            np.save(emb_path, emb)
+            pca_path = os.path.join(EMBEDDING_PCA_DIR, f"{filename}_pca.npy")
+            np.save(pca_path, emb_pca)
+            # INSERT mit Platzhaltern für umap_x, umap_y
+            cursor.execute(f"""
+                INSERT INTO {current_table_name}
+                (filename, path, color_hist, embedding_path, image_hash,
+                resolution, file_size, pca_embedding, umap_x, umap_y)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0.0, 0.0)
+            """, (filename, path, hist_str, emb_path, img_hash, resolution, size, pca_path))
+            new_id = cursor.lastrowid
+            table_ids.append(new_id)
+            table_embeddings.append(emb_pca)
+        conn.commit()
+        
+        total_processed += len(chunk)
+        pbar.update(len(chunk))
+        batch_counter += 1
+
+        if total_processed and total_processed % IMAGES_PER_TABLE == 0:
+            # —> hier der neue Block:
+            all_pca = np.vstack(table_embeddings)
+            reducer = umap.UMAP(n_components=2, n_jobs=-1)
+            coords  = reducer.fit_transform(all_pca)
+
+            # Update DB
+            for idx, db_id in enumerate(table_ids):
+                x, y = float(coords[idx,0]), float(coords[idx,1])
+                cursor.execute(
+                f"UPDATE {TABLE_PREFIX}{table_id} SET umap_x=?, umap_y=? WHERE id=?",
+                (x, y, db_id)
+                )
+            table_id += 1
+            current_table_name = f"{TABLE_PREFIX}{table_id}"
+            create_table_if_not_exists(current_table_name)
+
+
+        batch_images.clear()
+        del batch_images
+        del batch_meta
+        gc.collect()
+        print_resource_usage("Nach Batch GC", logfile)
+
+        try:
+            import torch
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+                log_debug(logfile, "[DEBUG] CUDA Cache geleert.")
+        except ImportError:
+            pass
+
+    pbar.close()
+    logfile.write(f"[{datetime.now()}] ✓ Gesamt: {total_processed} verarbeitet\n")
+    logfile.close()
+    conn.close()
+    log_debug(logfile, "[DEBUG] Verarbeitung abgeschlossen.")
+
+if __name__ == "__main__":
+    with cProfile.Profile() as pr:
+        main()
+
+    with open("profiling_results.txt", "w") as f:
+        stats = pstats.Stats(pr, stream=f)
+        stats.sort_stats("cumtime").print_stats()
+
+    stats.dump_stats("profiling_results.prof")
