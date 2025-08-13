@@ -21,3 +21,13 @@ for tbl in tables:
 # Alles zu einem DataFrame zusammenfügen
 df = pd.concat(dfs, ignore_index=True)
 
+plt.figure(figsize=(10, 8))
+plt.scatter(df['x'], df['y'], s=2, alpha=0.5)
+
+plt.title(f"UMAP-Embedding von {len(df)} Bildern (aus {len(tables)} Tabellen)")
+plt.xlabel("UMAP 1")
+plt.ylabel("UMAP 2")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
