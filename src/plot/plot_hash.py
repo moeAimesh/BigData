@@ -30,3 +30,11 @@ hash_matrix = np.stack(hash_bits)  # Shape: [N, B]
 
 # === Häufigkeit pro Bit ===
 bit_means = np.mean(hash_matrix, axis=0)  # Mittelwert pro Spalte
+
+plt.figure(figsize=(12, 4))
+plt.bar(range(len(bit_means)), bit_means, color='gray')
+plt.title("Häufigkeit von '1'-Bits über alle Hashes")
+plt.xlabel("Bit-Position")
+plt.ylabel("Anteil '1'")
+plt.grid(True)
+plt.show()
