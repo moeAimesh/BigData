@@ -9,9 +9,9 @@ from features.color_vec import calc_histogram
 from features.hash import calc_hash
 from features.embedding_vec import extract_embeddings
 
-PHOTO_FOLDER = r"D:\Test_bilder_verschachtelt"  # ✅ anpassen
+PHOTO_FOLDER = r"D:\data\image_data" 
 MAX_BATCH = 1024
-STEP = 64  # Steigerung
+STEP = 64  
 LOG_FILE = "batch_test_log.txt"
 
 def safe_log(msg):
