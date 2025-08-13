@@ -1,38 +1,31 @@
-# 2D/3D feature vektors plot with UMAP, t-SNE, TMAP
-
-
-
 import sqlite3
+import pandas as pd
 import matplotlib.pyplot as plt
 
-# === CONFIG ===
-DB_PATH = r"Z:\CODING\UNI\BIG_DATA\data\database.db"
-TABLE_NAME = "image_features_test"
+# 1) Verbindung öffnen (pfad anpassen)
+conn = sqlite3.connect(r"C:\BIG_DATA\data\database.db")
 
-# === Verbindung zur Datenbank ===
-conn = sqlite3.connect(DB_PATH)
-cursor = conn.cursor()
+# 2) Alle Teile laden und zusammenführen
+tables = [f"image_features_part_{i}" for i in range(1, 6)]
+dfs = []
+for tbl in tables:
+    df_part = pd.read_sql_query(
+        f"SELECT umap_x AS x, umap_y AS y FROM {tbl}",
+        conn
+    )
+    dfs.append(df_part)
 
-# === Koordinaten und Dateinamen abfragen ===
-cursor.execute(f"""
-    SELECT filename, umap_x, umap_y FROM {TABLE_NAME}
-    WHERE umap_x IS NOT NULL AND umap_y IS NOT NULL
-""")
-rows = cursor.fetchall()
+df = pd.concat(dfs, ignore_index=True)
 
-# === Schließen ===
-conn.close()
-
-# === Daten aufteilen ===
-filenames = [row[0] for row in rows]
-x_coords = [row[1] for row in rows]
-y_coords = [row[2] for row in rows]
-
-# === Visualisierung ===
-plt.figure(figsize=(10, 8))
-plt.scatter(x_coords, y_coords, s=5, alpha=0.6)
-plt.title("UMAP Visualisierung der Bilder")
-plt.xlabel("UMAP X")
-plt.ylabel("UMAP Y")
+# 3) Plot
+plt.figure(figsize=(10,8))
+plt.scatter(df['x'], df['y'], s=2, alpha=0.5)
+plt.title(f"UMAP-Embedding von {len(df)} Bildern (aus {len(tables)} Tabellen)")
+plt.xlabel("UMAP 1")
+plt.ylabel("UMAP 2")
 plt.grid(True)
+plt.tight_layout()
 plt.show()
+
+# 4) Verbindung schließen
+conn.close()

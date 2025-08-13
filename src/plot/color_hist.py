@@ -4,8 +4,8 @@ import sqlite3
 import matplotlib.pyplot as plt
 import math
 
-DB_PATH = r"Z:\CODING\UNI\BIG_DATA\data\database.db"
-TABLE_NAME = "image_features_test"
+DB_PATH = r"C:\BIG_DATA\data\database.db"
+TABLE_NAME = "image_features_part_6"
 
 # === DB-Verbindung ===
 conn = sqlite3.connect(DB_PATH)
