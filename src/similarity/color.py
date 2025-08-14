@@ -60,3 +60,20 @@ def parse_hist_text(s: str) -> np.ndarray:
         raise ValueError(f"Expected {DIM}, got {v.size}")
     ss = v.sum()
     return v / ss if ss > 0 else v
+
+def chi2_distance(X: np.ndarray, q: np.ndarray, eps: float = 1e-12) -> np.ndarray:
+    return 0.5 * (((X - q) ** 2) / (X + q + eps)).sum(axis=1)
+
+def hist_intersection_distance(X: np.ndarray, q: np.ndarray) -> np.ndarray:
+    sim = np.minimum(X, q).sum(axis=1)
+    return 1.0 - sim
+
+def hellinger_distance(X: np.ndarray, q: np.ndarray) -> np.ndarray:
+    sqX, sqq = np.sqrt(X, dtype=np.float32), np.sqrt(q, dtype=np.float32)
+    return np.linalg.norm(sqX - sqq, axis=1) / np.sqrt(2.0)
+
+def emd1d_per_channel_distance(X: np.ndarray, q: np.ndarray, bins=BINS) -> np.ndarray:
+    Xr, qr = X.reshape(-1, 3, bins), q.reshape(3, bins)
+    cX, cq = np.cumsum(Xr, axis=2), np.cumsum(qr, axis=1)
+    emd = np.abs(cX - cq).sum(axis=2).mean(axis=1) / (bins - 1)
+    return emd.astype(np.float32)
