@@ -85,3 +85,17 @@ def emd1d_per_channel_distance(X: np.ndarray, q: np.ndarray, bins=BINS) -> np.nd
     cX, cq = np.cumsum(Xr, axis=2), np.cumsum(qr, axis=1)
     emd = np.abs(cX - cq).sum(axis=2).mean(axis=1) / (bins - 1)  # ∈[0,1]
     return emd.astype(np.float32)
+
+def to_similarity(metric: str, d: np.ndarray) -> np.ndarray:
+    m = metric.lower()
+    if m == "intersect":
+        return 1.0 - d            # Intersection ist schon [0,1]
+    if m in ("hellinger", "emd"):
+        return 1.0 - d            # beide ∈[0,1]
+    if m in ("chi2", "chisquare", "chi-square"):
+        # robust via Perzentile (gegen Ausreißer)
+        p5, p95 = np.percentile(d, 5), np.percentile(d, 95)
+        denom = max(p95 - p5, 1e-9)
+        return 1.0 - np.clip((d - p5) / denom, 0.0, 1.0)
+        # Alternative: return 1.0 / (1.0 + d)
+    raise ValueError(f"unknown metric: {metric}")
