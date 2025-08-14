@@ -173,3 +173,15 @@ def search_color_voting(
         }
         out.append(res)
     return out
+
+res = search_color_voting(
+    db_path=DB_PATH,
+    q_hist=q_hist,
+    hist_col="color_hist",  # ggf. anpassen
+    metrics=("chi2", "hellinger", "intersect", "emd"),
+    weights={"chi2": 1.0, "hellinger": 1.0, "intersect": 0.8, "emd": 1.2},
+    topk=5
+)
+
+for r in res[:5]:
+    print(r["fused_similarity"], r["per_metric"], r["path"])
