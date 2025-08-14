@@ -46,3 +46,9 @@ def calc_histogram(img, bins=32):
     if s > 0:
         hist /= s
     return hist
+
+img = cv2.imread(
+    r"D:\data\image_data\pixabay_dataset_v1\images_01\analog-camera-kodak-lens-2256976.jpg",
+    cv2.IMREAD_COLOR
+)
+q_hist = calc_histogram(img, bins=32)
