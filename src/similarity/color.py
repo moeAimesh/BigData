@@ -52,3 +52,11 @@ img = cv2.imread(
     cv2.IMREAD_COLOR
 )
 q_hist = calc_histogram(img, bins=32)
+
+def parse_hist_text(s: str) -> np.ndarray:
+    """CSV-Text -> np.ndarray (DIM,) L1-normalisiert."""
+    v = np.fromstring(s, dtype=np.float32, sep=",")
+    if v.size != DIM:
+        raise ValueError(f"Expected {DIM}, got {v.size}")
+    ss = v.sum()
+    return v / ss if ss > 0 else v
