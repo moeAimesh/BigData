@@ -89,3 +89,75 @@ def to_similarity(metric: str, d: np.ndarray) -> np.ndarray:
         denom = max(p95 - p5, 1e-9)
         return 1.0 - np.clip((d - p5) / denom, 0.0, 1.0)
     raise ValueError(f"unknown metric: {metric}")
+
+def search_color_voting(
+    db_path: str,
+    q_hist: np.ndarray,
+    hist_col: str = "color_hist",
+    metrics = ("chi2", "hellinger", "intersect", "emd"),
+    weights: Dict[str, float] = None,
+    topk: int = 20
+) -> List[Dict[str, Any]]:
+    if weights is None:
+        weights = {"chi2": 1.0, "hellinger": 1.0, "intersect": 0.8, "emd": 1.2}
+
+    # 1) Daten laden
+    ids, paths, feats, tabs = [], [], [], []
+    con = sqlite3.connect(db_path); cur = con.cursor()
+    for t in TABLES:
+        cur.execute(f"PRAGMA table_info({t})")
+        cols = {r[1] for r in cur.fetchall()}
+        if "id" not in cols or hist_col not in cols:
+            continue
+        has_path = ("filepath" in cols) or ("path" in cols)
+        sel = f"id,{hist_col}" + (",filepath" if "filepath" in cols else "") + (",path" if "path" in cols else "")
+        for row in cur.execute(f"SELECT {sel} FROM {t} WHERE {hist_col} IS NOT NULL"):
+            try:
+                h = parse_hist_text(row[1])
+            except Exception:
+                continue
+            ids.append(int(row[0])); feats.append(h); tabs.append(t)
+            paths.append(row[-1] if has_path else None)
+    con.close()
+    if not feats:
+        return []
+
+    X = np.vstack(feats).astype(np.float32)
+    X = (X.T / (X.sum(axis=1) + 1e-12)).T
+    q = q_hist.astype(np.float32); q = q / (q.sum() + 1e-12)
+
+    # 2) Distanzen
+    D: Dict[str, np.ndarray] = {}
+    for m in metrics:
+        ml = m.lower()
+        if ml in ("chi2", "chisquare", "chi-square"):
+            D[m] = chi2_distance(X, q)
+        elif ml in ("hellinger", "bhattacharyya", "bhatta"):
+            D[m] = hellinger_distance(X, q)
+        elif ml in ("intersect", "intersection"):
+            D[m] = hist_intersection_distance(X, q)
+        elif ml in ("emd", "wasserstein"):
+            D[m] = emd1d_per_channel_distance(X, q)
+        else:
+            raise ValueError(f"unknown metric {m}")
+
+    # 3) Similarities + Voting
+    S = [weights[m] * to_similarity(m, D[m]) for m in metrics]
+    wsum = sum(weights[m] for m in metrics)
+    fused = np.sum(S, axis=0) / (wsum + 1e-12)
+
+    # 4) Top-k
+    k = min(topk, fused.size)
+    idx = np.argpartition(-fused, k-1)[:k]
+    idx = idx[np.argsort(-fused[idx])]
+
+    out = []
+    for i in idx:
+        res = {
+            "table": tabs[i], "id": int(ids[i]),
+            "path": None if paths[i] is None else str(paths[i]),
+            "fused_similarity": float(fused[i]),
+            "per_metric": {m: float(to_similarity(m, D[m][i:i+1])[0]) for m in metrics}
+        }
+        out.append(res)
+    return out
