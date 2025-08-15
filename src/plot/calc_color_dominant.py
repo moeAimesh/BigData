@@ -84,3 +84,19 @@ def hsv01_to_rgb01(hsv):
         m = (i_mod == k)
         out[m,0], out[m,1], out[m,2] = [arr[m] for arr in lut[k]]
     return out
+
+def apply_visual_boost(rgb255: np.ndarray) -> np.ndarray:
+    x = (rgb255 / 255.0).clip(0,1).astype(np.float32)
+    hsv = rgb_to_hsv01(x)
+    hsv[:,1] = np.clip(hsv[:,1] * SAT_BOOST, 0, 1)
+    hsv[:,2] = np.clip(hsv[:,2] * VAL_BOOST, 0, 1)
+    y = hsv01_to_rgb01(hsv)
+    if GAMMA != 1.0:
+        y = np.clip(y, 0, 1) ** (1.0 / GAMMA)
+    return y
+
+def stretch_positions(pos255: np.ndarray, factor: float) -> np.ndarray:
+    if abs(factor - 1.0) < 1e-6:
+        return pos255
+    c = 128.0
+    return np.clip(c + factor*(pos255 - c), 0, 255)
