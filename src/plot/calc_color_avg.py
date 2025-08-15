@@ -16,3 +16,13 @@ MODE = "avg"    # 'avg' oder 'dominant'
 # Bin-Kanten/Zentren (wie in calc_histogram genutzt)
 edges   = np.linspace(0, 256, BINS+1, dtype=np.float32)
 centers = (edges[:-1] + edges[1:]) * 0.5
+
+def parse_hist_text(s: str) -> np.ndarray:
+    """CSV-Text -> L1-normalisierter Histogrammvektor (96 Werte)."""
+    v = np.fromstring(s, sep=',', dtype=np.float32)
+    if v.size != DIM:
+        return None
+    ssum = v.sum()
+    if ssum > 0:
+        v /= ssum
+    return v
