@@ -49,3 +49,38 @@ def hist_to_rgb(h: np.ndarray, mode: str = MODE) -> np.ndarray:
     g = channel_from_hist(G, mode)
     r = channel_from_hist(R, mode)
     return np.array([r, g, b], dtype=np.float32).clip(0, 255)
+
+def rgb_to_hsv01(rgb01):
+    r,g,b = rgb01[...,0], rgb01[...,1], rgb01[...,2]
+    cmax, cmin = np.max(rgb01, axis=-1), np.min(rgb01, axis=-1)
+    delta = cmax - cmin + 1e-12
+    h = np.zeros_like(cmax)
+    mask = (cmax == r)
+    h[mask] = ((g-b)[mask]/delta[mask]) % 6
+    mask = (cmax == g)
+    h[mask] = ((b-r)[mask]/delta[mask]) + 2
+    mask = (cmax == b)
+    h[mask] = ((r-g)[mask]/delta[mask]) + 4
+    h = (h/6.0) % 1.0
+    s = delta / (cmax + 1e-12)
+    v = cmax
+    return np.stack([h,s,v], axis=-1)
+
+def hsv01_to_rgb01(hsv):
+    h,s,v = hsv[...,0], hsv[...,1], hsv[...,2]
+    h6 = h*6.0
+    i  = np.floor(h6).astype(int)
+    f  = h6 - i
+    p  = v*(1-s)
+    q  = v*(1-s*f)
+    t  = v*(1-s*(1-f))
+    i_mod = i % 6
+    out = np.zeros(hsv.shape, dtype=np.float32)
+    lut = {
+        0: (v,t,p), 1: (q,v,p), 2: (p,v,t),
+        3: (p,q,v), 4: (t,p,v), 5: (v,p,q),
+    }
+    for k in range(6):
+        m = (i_mod == k)
+        out[m,0], out[m,1], out[m,2] = [arr[m] for arr in lut[k]]
+    return out
