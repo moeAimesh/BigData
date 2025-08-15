@@ -100,3 +100,27 @@ def stretch_positions(pos255: np.ndarray, factor: float) -> np.ndarray:
         return pos255
     c = 128.0
     return np.clip(c + factor*(pos255 - c), 0, 255)
+
+def main():
+    pos = []
+    with sqlite3.connect(DB_PATH) as con:
+        cur = con.cursor()
+        for t in TABLES:
+            cur.execute(f"PRAGMA table_info({t})")
+            cols = {r[1] for r in cur.fetchall()}
+            if HIST_COL not in cols:
+                continue
+            for (txt,) in cur.execute(f"SELECT {HIST_COL} FROM {t} WHERE {HIST_COL} IS NOT NULL"):
+                h = parse_hist_text(txt)
+                if h is None: continue
+                pos.append(hist_to_rgb(h, MODE))
+    if not pos:
+        raise RuntimeError("Keine Histogramme gefunden.")
+
+    pos = np.vstack(pos).astype(np.float32)
+    pos_stretched = stretch_positions(pos, STRETCH)
+    colors = apply_visual_boost(pos).astype(np.float32)
+
+    os.makedirs(os.path.dirname(OUT_NPZ), exist_ok=True)
+    np.savez_compressed(OUT_NPZ, pos=pos_stretched, colors=colors)
+    print(f"Gespeichert: {OUT_NPZ}  | Punkte: {pos.shape[0]}  | mode={MODE}, alpha={ALPHA}, stretch={STRETCH}")
