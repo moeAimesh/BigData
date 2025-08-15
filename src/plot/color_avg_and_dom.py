@@ -46,3 +46,49 @@ def voxel_downsample_rgb(pos, bins_per_axis=64):
 
     colors = (means / 255.0).clip(0, 1).astype(np.float32)
     return means, colors, sizes
+
+def main():
+    # 1) Laden
+    data = np.load(NPZ_PATH)
+    pos = data["pos"].astype(np.float32)        # (N,3), 0..255
+    colors = data["colors"].astype(np.float32)  # (N,3), 0..1
+    sizes = None
+
+    print("Geladen:", NPZ_PATH, "| Punkte:", pos.shape[0])
+
+    # 2) Optional LOD per Voxel
+    if VOXEL_BINS is not None:
+        pos, colors, sizes = voxel_downsample_rgb(pos, bins_per_axis=VOXEL_BINS)
+        print(f"LOD aktiv: bins={VOXEL_BINS} -> Punkte: {pos.shape[0]}")
+
+    # 3) VisPy Setup
+    canvas = scene.SceneCanvas(keys='interactive', bgcolor=BG_COLOR, size=(1100, 800), show=True)
+    view = canvas.central_widget.add_view()
+    view.camera = 'turntable'   # Maus: drehen/zoomen/pannen
+
+    # Marker erstellen (RGB im 3D-Raum)
+    markers = scene.visuals.Markers(parent=view.scene)
+    rgba = np.c_[colors, np.full((colors.shape[0], 1), ALPHA, dtype=np.float32)]
+
+    markers.set_data(
+        pos=pos,
+        face_color=rgba,
+        size=(sizes if sizes is not None else POINT_SIZE),
+        edge_width=0.0
+    )
+
+    # Achsen & Limits für RGB-Würfel
+    scene.visuals.XYZAxis(parent=view.scene)
+    view.camera.set_range(x=(0, 255), y=(0, 255), z=(0, 255))
+
+    # netter Startblick
+    try:
+        view.camera.azimuth = 35
+        view.camera.elevation = 20
+    except Exception:
+        pass
+
+    app.run()
+
+if __name__ == "__main__":
+    main()
