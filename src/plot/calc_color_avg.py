@@ -26,3 +26,25 @@ def parse_hist_text(s: str) -> np.ndarray:
     if ssum > 0:
         v /= ssum
     return v
+
+def hist_to_rgb(h: np.ndarray, mode: str = "avg") -> np.ndarray:
+    """
+    h: (96,) = [B(32), G(32), R(32)] L1-normalisiert
+    -> RGB-Wert (0..255) als np.ndarray
+    """
+    B = h[0:BINS]
+    G = h[BINS:2*BINS]
+    R = h[2*BINS:3*BINS]
+
+    if mode == "avg":
+        b = float((B * centers).sum())
+        g = float((G * centers).sum())
+        r = float((R * centers).sum())
+    elif mode == "dominant":
+        b = float(centers[int(np.argmax(B))])
+        g = float(centers[int(np.argmax(G))])
+        r = float(centers[int(np.argmax(R))])
+    else:
+        raise ValueError("MODE must be 'avg' or 'dominant'")
+
+    return np.array([r, g, b], dtype=np.float32).clip(0, 255)
