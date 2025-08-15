@@ -48,3 +48,35 @@ def hist_to_rgb(h: np.ndarray, mode: str = "avg") -> np.ndarray:
         raise ValueError("MODE must be 'avg' or 'dominant'")
 
     return np.array([r, g, b], dtype=np.float32).clip(0, 255)
+
+def main():
+    pos = []  # Liste mit RGB-Positionen (0..255)
+
+    with sqlite3.connect(DB_PATH) as con:
+        cur = con.cursor()
+        for t in TABLES:
+            # Prüfen, ob Spalte vorhanden ist
+            cur.execute(f"PRAGMA table_info({t})")
+            cols = {r[1] for r in cur.fetchall()}
+            if HIST_COL not in cols:
+                continue
+
+            # Histogramm-Daten abrufen
+            cur.execute(f"SELECT {HIST_COL} FROM {t} WHERE {HIST_COL} IS NOT NULL")
+            for (txt,) in cur.fetchall():
+                h = parse_hist_text(txt)
+                if h is None:
+                    continue
+                pos.append(hist_to_rgb(h, MODE))
+
+    if not pos:
+        raise RuntimeError("Keine Histogrameinträge gefunden.")
+
+    # In NumPy-Array umwandeln
+    pos = np.vstack(pos).astype(np.float32)               # (N,3) in 0..255
+    colors = (pos / 255.0).clip(0, 1).astype(np.float32)  # Für Plotfarben
+
+    # Speichern
+    os.makedirs(os.path.dirname(OUT_NPZ), exist_ok=True)
+    np.savez_compressed(OUT_NPZ, pos=pos, colors=colors)
+    print(f"Gespeichert: {OUT_NPZ}  | Punkte: {pos.shape[0]}  | Modus: {MODE}")
