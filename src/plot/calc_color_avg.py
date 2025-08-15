@@ -80,3 +80,6 @@ def main():
     os.makedirs(os.path.dirname(OUT_NPZ), exist_ok=True)
     np.savez_compressed(OUT_NPZ, pos=pos, colors=colors)
     print(f"Gespeichert: {OUT_NPZ}  | Punkte: {pos.shape[0]}  | Modus: {MODE}")
+
+if __name__ == "__main__":
+    main()
