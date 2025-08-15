@@ -1,38 +1,40 @@
+# build_rgb_cache_from_hist_bold.py
 import sqlite3, os, numpy as np
 
 DB_PATH   = r"C:\BIG_DATA\data\database.db"
 TABLES    = [f"image_features_part_{i}" for i in range(1, 8)]
-HIST_COL  = "color_hist"
+HIST_COL  = "color_hist"                      # ggf. anpassen
 OUT_NPZ   = r"C:\BIG_DATA\data\avg_rgb_points_from_hist_bold_mode_maxed.npz"
 
 BINS = 32
 DIM  = 3*BINS
 
-# Farbverstärkung
-SAT_BOOST = 1.7
-VAL_BOOST = 1.15
-GAMMA     = 1.3
+# ---- Farbverstärkung nur fürs Rendering ----
+SAT_BOOST = 1.7       # >1 macht bunter (z.B. 1.2..1.8)
+VAL_BOOST = 1.15      # >1 macht heller (z.B. 1.05..1.2)
+GAMMA     = 1.3       # <1 dunkler, >1 heller in sRGB-ähnlichem Sinn (z.B. 1.3)
 
-# Dominanz-Modus
-MODE  = "soft"
-ALPHA = 3.0
+# ---- Dominanz-Modus ----
+MODE  = "soft"        # "mean" | "soft" | "mode"
+ALPHA = 3.0           # Softmax-Schärfe (2..5 ist gut)
 
-# Positions-Stretch
-STRETCH = 1.2
+# ---- Positions-Stretch (optional, für mehr Abstand) ----
+STRETCH = 1.2        # 1.0 = aus; >1 dehnt um 128 herum (z.B. 1.2..1.5)
 
-# Bin-Zentren
+# Bin-Zentren für [0,256] in 32 Bins
 edges   = np.linspace(0, 256, BINS+1, dtype=np.float32)
-centers = (edges[:-1] + edges[1:]) * 0.5
+centers = (edges[:-1] + edges[1:]) * 0.5      # 32 Werte ~[4,252]
 
 def parse_hist_text(s: str) -> np.ndarray:
     v = np.fromstring(s, sep=',', dtype=np.float32)
     if v.size != DIM:
         return None
     ssum = v.sum()
-    if ssum > 0: v /= ssum
+    if ssum > 0: v /= ssum  # L1
     return v
 
 def channel_from_hist(hc: np.ndarray, mode: str) -> float:
+    """hc: (32,) einer Farbe -> Rückgabe float in 0..255 (Zentrum/Erwartungswert)."""
     if mode == "mean":
         return float((hc * centers).sum())
     if mode == "mode":
@@ -54,6 +56,7 @@ def rgb_to_hsv01(rgb01):
     r,g,b = rgb01[...,0], rgb01[...,1], rgb01[...,2]
     cmax, cmin = np.max(rgb01, axis=-1), np.min(rgb01, axis=-1)
     delta = cmax - cmin + 1e-12
+    # Hue
     h = np.zeros_like(cmax)
     mask = (cmax == r)
     h[mask] = ((g-b)[mask]/delta[mask]) % 6
@@ -62,6 +65,7 @@ def rgb_to_hsv01(rgb01):
     mask = (cmax == b)
     h[mask] = ((r-g)[mask]/delta[mask]) + 4
     h = (h/6.0) % 1.0
+    # Sat & Val
     s = delta / (cmax + 1e-12)
     v = cmax
     return np.stack([h,s,v], axis=-1)
@@ -86,13 +90,14 @@ def hsv01_to_rgb01(hsv):
     return out
 
 def apply_visual_boost(rgb255: np.ndarray) -> np.ndarray:
+    """Nur für Marker-Farbe: S/V boosten + Gamma-Aufhellung."""
     x = (rgb255 / 255.0).clip(0,1).astype(np.float32)
     hsv = rgb_to_hsv01(x)
     hsv[:,1] = np.clip(hsv[:,1] * SAT_BOOST, 0, 1)
     hsv[:,2] = np.clip(hsv[:,2] * VAL_BOOST, 0, 1)
     y = hsv01_to_rgb01(hsv)
     if GAMMA != 1.0:
-        y = np.clip(y, 0, 1) ** (1.0 / GAMMA)
+        y = np.clip(y, 0, 1) ** (1.0 / GAMMA)  # GAMMA>1 -> heller
     return y
 
 def stretch_positions(pos255: np.ndarray, factor: float) -> np.ndarray:
@@ -117,9 +122,13 @@ def main():
     if not pos:
         raise RuntimeError("Keine Histogramme gefunden.")
 
-    pos = np.vstack(pos).astype(np.float32)
+    pos = np.vstack(pos).astype(np.float32)  # (N,3) 0..255
+
+    # (optional) Positionen spreizen
     pos_stretched = stretch_positions(pos, STRETCH)
-    colors = apply_visual_boost(pos).astype(np.float32)
+
+    # Marker-Farben boosten (HSV + Gamma)
+    colors = apply_visual_boost(pos).astype(np.float32)  # 0..1
 
     os.makedirs(os.path.dirname(OUT_NPZ), exist_ok=True)
     np.savez_compressed(OUT_NPZ, pos=pos_stretched, colors=colors)
