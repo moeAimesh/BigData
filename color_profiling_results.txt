@@ -1,0 +1,391 @@
+         2609379 function calls (2609282 primitive calls) in 9.795 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.069    0.069    9.795    9.795 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:199(main)
+        1    2.503    2.503    9.676    9.676 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:96(search_color_voting)
+   236587    1.036    0.000    6.075    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:57(parse_hist_text)
+   236587    4.371    0.000    4.371    0.000 {built-in method numpy.fromstring}
+   236593    0.131    0.000    0.714    0.000 {method 'sum' of 'numpy.ndarray' objects}
+   236593    0.051    0.000    0.584    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\_methods.py:47(_sum)
+   236668    0.546    0.000    0.546    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+        1    0.137    0.137    0.337    0.337 C:\Anaconda3\Lib\site-packages\numpy\core\shape_base.py:219(vstack)
+  1183386    0.210    0.000    0.210    0.000 {method 'append' of 'list' objects}
+        1    0.197    0.197    0.207    0.207 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:67(chi2_distance)
+        1    0.144    0.144    0.200    0.200 C:\Anaconda3\Lib\site-packages\numpy\core\shape_base.py:81(atleast_2d)
+        1    0.073    0.073    0.147    0.147 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:78(emd1d_per_channel_distance)
+        1    0.084    0.084    0.120    0.120 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:74(hellinger_distance)
+       10    0.000    0.000    0.059    0.006 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:53(_wrapfunc)
+        2    0.000    0.000    0.055    0.028 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:2512(cumsum)
+        2    0.055    0.028    0.055    0.028 {method 'cumsum' of 'numpy.ndarray' objects}
+        1    0.037    0.037    0.047    0.047 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:70(hist_intersection_distance)
+        1    0.025    0.025    0.036    0.036 C:\Anaconda3\Lib\site-packages\numpy\linalg\linalg.py:2383(norm)
+        1    0.032    0.032    0.032    0.032 {imread}
+       30    0.026    0.001    0.026    0.001 {method 'astype' of 'numpy.ndarray' objects}
+   236732    0.020    0.000    0.020    0.000 {built-in method numpy.asanyarray}
+        1    0.000    0.000    0.013    0.013 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:176(build_argparser)
+        1    0.000    0.000    0.013    0.013 C:\Anaconda3\Lib\argparse.py:1763(__init__)
+      9/2    0.000    0.000    0.011    0.006 <frozen importlib._bootstrap>:1349(_find_and_load)
+      9/2    0.000    0.000    0.011    0.006 <frozen importlib._bootstrap>:1304(_find_and_load_unlocked)
+       24    0.001    0.000    0.011    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:84(to_similarity)
+        8    0.000    0.000    0.010    0.001 C:\Anaconda3\Lib\argparse.py:1446(add_argument)
+      9/2    0.000    0.000    0.010    0.005 <frozen importlib._bootstrap>:911(_load_unlocked)
+      5/2    0.000    0.000    0.010    0.005 <frozen importlib._bootstrap_external>:989(exec_module)
+        8    0.000    0.000    0.010    0.001 C:\Anaconda3\Lib\argparse.py:2629(_get_formatter)
+        8    0.000    0.000    0.010    0.001 C:\Anaconda3\Lib\argparse.py:164(__init__)
+       12    0.000    0.000    0.009    0.001 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:3992(percentile)
+       12    0.000    0.000    0.008    0.001 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:4547(_quantile_unchecked)
+       12    0.000    0.000    0.008    0.001 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:3763(_ureduce)
+       12    0.000    0.000    0.008    0.001 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:4697(_quantile_ureduce_func)
+     20/4    0.000    0.000    0.008    0.002 <frozen importlib._bootstrap>:480(_call_with_frames_removed)
+      5/2    0.000    0.000    0.008    0.004 {built-in method builtins.exec}
+       12    0.000    0.000    0.008    0.001 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:4765(_quantile)
+       13    0.008    0.001    0.008    0.001 {method 'execute' of 'sqlite3.Cursor' objects}
+        1    0.000    0.000    0.008    0.008 C:\Anaconda3\Lib\shutil.py:1(<module>)
+       12    0.005    0.000    0.005    0.000 {method 'partition' of 'numpy.ndarray' objects}
+        1    0.004    0.004    0.005    0.005 {built-in method _sqlite3.connect}
+        5    0.000    0.000    0.004    0.001 <frozen importlib._bootstrap_external>:1062(get_code)
+        1    0.000    0.000    0.003    0.003 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:39(calc_histogram)
+        1    0.000    0.000    0.003    0.003 {method 'mean' of 'numpy.ndarray' objects}
+        1    0.001    0.001    0.003    0.003 C:\Anaconda3\Lib\site-packages\numpy\core\_methods.py:101(_mean)
+        3    0.003    0.001    0.003    0.001 {calcHist}
+        9    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap>:806(module_from_spec)
+        1    0.000    0.000    0.003    0.003 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:779(argpartition)
+        1    0.003    0.003    0.003    0.003 {method 'argpartition' of 'numpy.ndarray' objects}
+        1    0.000    0.000    0.003    0.003 C:\Anaconda3\Lib\bz2.py:1(<module>)
+        9    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap>:1240(_find_spec)
+        3    0.000    0.000    0.003    0.001 C:\Anaconda3\Lib\gettext.py:616(gettext)
+        3    0.000    0.000    0.003    0.001 C:\Anaconda3\Lib\gettext.py:578(dgettext)
+        3    0.000    0.000    0.003    0.001 C:\Anaconda3\Lib\gettext.py:519(translation)
+        3    0.000    0.000    0.003    0.001 C:\Anaconda3\Lib\gettext.py:479(find)
+        2    0.000    0.000    0.003    0.001 <frozen importlib._bootstrap_external>:1287(create_module)
+        2    0.003    0.001    0.003    0.001 {built-in method _imp.create_dynamic}
+        7    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap_external>:1520(find_spec)
+        7    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap_external>:1491(_get_spec)
+       19    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap_external>:1593(find_spec)
+        1    0.000    0.000    0.002    0.002 C:\Anaconda3\Lib\site-packages\numpy\core\shape_base.py:215(_vhstack_dispatcher)
+        1    0.002    0.002    0.002    0.002 C:\Anaconda3\Lib\site-packages\numpy\core\shape_base.py:207(_arrays_for_stack_dispatcher)
+        6    0.000    0.000    0.002    0.000 C:\Anaconda3\Lib\gettext.py:224(_expand_lang)
+        1    0.000    0.000    0.002    0.002 C:\Anaconda3\Lib\lzma.py:1(<module>)
+        5    0.000    0.000    0.002    0.000 <frozen importlib._bootstrap_external>:1183(get_data)
+       31    0.000    0.000    0.002    0.000 <frozen importlib._bootstrap_external>:140(_path_stat)
+       31    0.002    0.000    0.002    0.000 {built-in method nt.stat}
+       37    0.000    0.000    0.002    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:71(_wrapreduction)
+       12    0.000    0.000    0.002    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\arraysetops.py:138(unique)
+       12    0.001    0.000    0.002    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\arraysetops.py:323(_unique1d)
+        5    0.001    0.000    0.001    0.000 {built-in method _io.open_code}
+        1    0.000    0.000    0.001    0.001 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:2177(sum)
+        1    0.001    0.001    0.001    0.001 {method 'conj' of 'numpy.ndarray' objects}
+        5    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:751(_compile_bytecode)
+        5    0.001    0.000    0.001    0.000 {built-in method marshal.loads}
+       23    0.000    0.000    0.001    0.000 C:\Anaconda3\Lib\re\__init__.py:280(_compile)
+       20    0.000    0.000    0.001    0.000 C:\Anaconda3\Lib\re\__init__.py:226(compile)
+       12    0.001    0.000    0.001    0.000 {method 'sort' of 'numpy.ndarray' objects}
+        5    0.000    0.000    0.001    0.000 C:\Anaconda3\Lib\re\_compiler.py:740(compile)
+       89    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:96(_path_join)
+        1    0.000    0.000    0.001    0.001 C:\Anaconda3\Lib\locale.py:1(<module>)
+        8    0.000    0.000    0.001    0.000 C:\Anaconda3\Lib\shutil.py:1422(get_terminal_size)
+       12    0.000    0.000    0.001    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:4565(_quantile_is_valid)
+        5    0.001    0.000    0.001    0.000 {built-in method builtins.print}
+       12    0.000    0.000    0.001    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:4730(_get_indexes)
+        1    0.001    0.001    0.001    0.001 {method 'close' of 'sqlite3.Connection' objects}
+        8    0.000    0.000    0.000    0.000 {built-in method nt.get_terminal_size}
+       24    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:2421(all)
+        5    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:969(parse)
+        5    0.000    0.000    0.000    0.000 {method 'read' of '_io.BufferedReader' objects}
+      9/5    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:452(_parse_sub)
+        6    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:2100(clip)
+        6    0.000    0.000    0.000    0.000 {method 'clip' of 'numpy.ndarray' objects}
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1364(__init__)
+        6    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\_methods.py:90(_clip)
+       11    0.000    0.000    0.000    0.000 {built-in method builtins.__build_class__}
+       24    0.000    0.000    0.000    0.000 {method 'all' of 'numpy.generic' objects}
+     10/6    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:512(_parse)
+       12    0.000    0.000    0.000    0.000 {built-in method nt._path_exists}
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1894(parse_args)
+        5    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:573(_code)
+       24    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\_methods.py:61(_all)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1904(parse_known_args)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1942(_parse_known_args)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:159(_path_isfile)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:150(_path_is_mode_type)
+        2    0.000    0.000    0.000    0.000 {built-in method nt._path_isfile}
+        4    0.000    0.000    0.000    0.000 <frozen abc>:105(__new__)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.next}
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\contextlib.py:132(__enter__)
+        2    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\_ufunc_config.py:452(_no_nep50_warning)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:416(__enter__)
+        1    0.000    0.000    0.000    0.000 {method 'set' of '_contextvars.ContextVar' objects}
+       12    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:4641(_lerp)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:2009(consume_optional)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:733(_init_module_attrs)
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1202(path_stats)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:482(cache_from_source)
+     18/5    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:37(_compile)
+       48    0.000    0.000    0.000    0.000 {method 'any' of 'numpy.generic' objects}
+       24    0.000    0.000    0.000    0.000 {method 'flatten' of 'numpy.ndarray' objects}
+        7    0.000    0.000    0.000    0.000 {method 'fetchall' of 'sqlite3.Cursor' objects}
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\collections\__init__.py:355(namedtuple)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:2247(_match_argument)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:304(acquire)
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:632(cached)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\__init__.py:164(match)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:611(_get_cached)
+      111    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+       12    0.000    0.000    0.000    0.000 <frozen ntpath>:107(join)
+       12    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:2322(any)
+       36    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\numerictypes.py:357(issubdtype)
+        5    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:511(_compile_info)
+       48    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\_methods.py:55(_any)
+        5    0.000    0.000    0.000    0.000 {method '__exit__' of '_io._IOBase' objects}
+       13    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x00007FFED36E6A20}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.eval}
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\_compression.py:1(<module>)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1588(_get_spec)
+       28    0.000    0.000    0.000    0.000 <frozen os>:709(__getitem__)
+  477/458    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        2    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1497(add_argument_group)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1295(exec_module)
+      129    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:997(exec_module)
+       10    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\enum.py:1562(__and__)
+      303    0.000    0.000    0.000    0.000 {method 'endswith' of 'str' objects}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:426(_get_module_lock)
+        2    0.000    0.000    0.000    0.000 {built-in method _imp.exec_builtin}
+        2    0.000    0.000    0.000    0.000 {built-in method _imp.exec_dynamic}
+        2    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1673(__init__)
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1874(_add_action)
+        9    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\_distutils_hack\__init__.py:102(find_spec)
+       49    0.000    0.000    0.000    0.000 <frozen ntpath>:179(splitroot)
+        6    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\locale.py:381(normalize)
+      350    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:162(__enter__)
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1695(_add_action)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:802(spec_from_file_location)
+      278    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+      198    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+       12    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:4619(_get_gamma)
+       72    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\numerictypes.py:283(issubclass_)
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:666(_classify_pyc)
+        2    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\functools.py:35(update_wrapper)
+        6    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:243(_optimize_charset)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:124(setdefault)
+     21/8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:178(getwidth)
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1507(_add_action)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:132(_path_split)
+      103    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:168(__getitem__)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\functools.py:516(decorating_function)
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1586(_get_optional_kwargs)
+       12    0.000    0.000    0.000    0.000 <frozen _collections_abc>:804(get)
+       27    0.000    0.000    0.000    0.000 {built-in method builtins.max}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:420(__exit__)
+       25    0.000    0.000    0.000    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:241(<genexpr>)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\locale.py:347(_replace_encoding)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1989(take_action)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:84(_unpack_uint32)
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:604(_format_args)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:372(release)
+       28    0.000    0.000    0.000    0.000 <frozen os>:783(encodekey)
+      120    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:185(_path_abspath)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:982(find_spec)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\_methods.py:67(_count_reduce_items)
+       67    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:261(get)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\cProfile.py:119(__exit__)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:232(__init__)
+       12    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:110(<lambda>)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:172(_path_isabs)
+      111    0.000    0.000    0.000    0.000 {built-in method builtins.issubclass}
+      115    0.000    0.000    0.000    0.000 {method 'replace' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:989(create_module)
+        9    0.000    0.000    0.000    0.000 {method 'format' of 'str' objects}
+       99    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:240(__next)
+       30    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\enum.py:1544(_get_value)
+       37    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1417(register)
+      102    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:491(_verbose_message)
+       12    0.000    0.000    0.000    0.000 {built-in method numpy.empty}
+        4    0.000    0.000    0.000    0.000 {built-in method _abc._abc_init}
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\encodings\__init__.py:43(normalize_encoding)
+       12    0.000    0.000    0.000    0.000 {method 'match' of 're.Pattern' objects}
+        2    0.000    0.000    0.000    0.000 {built-in method _imp.create_builtin}
+       46    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+       14    0.000    0.000    0.000    0.000 {method 'reshape' of 'numpy.ndarray' objects}
+       40    0.000    0.000    0.000    0.000 {method 'lower' of 'str' objects}
+       10    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\enum.py:726(__call__)
+       48    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:2509(_get_values)
+       50    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\contextlib.py:299(helper)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:74(__new__)
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:699(_validate_timestamp_pyc)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:1025(argsort)
+       30    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:134(<genexpr>)
+       10    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:372(_escape)
+       47    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+       22    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1421(_registry_get)
+       28    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:176(append)
+        7    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:950(__init__)
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1620(_pop_action_class)
+       41    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:164(__len__)
+      6/5    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:436(_get_literal_prefix)
+       64    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:256(match)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:445(cb)
+        6    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:2560(_get_value)
+       27    0.000    0.000    0.000    0.000 {method 'ravel' of 'numpy.ndarray' objects}
+       87    0.000    0.000    0.000    0.000 {method 'setdefault' of 'dict' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:662(spec_from_loader)
+        9    0.000    0.000    0.000    0.000 {built-in method _imp.is_builtin}
+       28    0.000    0.000    0.000    0.000 <frozen os>:777(check_str)
+        2    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:386(_mk_bitmap)
+        1    0.000    0.000    0.000    0.000 <frozen ntpath>:268(basename)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:98(closegroup)
+       32    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1226(__exit__)
+        1    0.000    0.000    0.000    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:188(parse_weights)
+       24    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:293(tell)
+       19    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:67(_relax_case)
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:398(_simple)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\contextlib.py:141(__exit__)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.sum}
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1128(find_spec)
+       32    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1222(__enter__)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:449(_uniq)
+        1    0.000    0.000    0.000    0.000 <frozen ntpath>:236(split)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:82(remove)
+       19    0.000    0.000    0.000    0.000 {built-in method builtins.setattr}
+        1    0.000    0.000    0.000    0.000 {method 'cursor' of 'sqlite3.Connection' objects}
+        9    0.000    0.000    0.000    0.000 {built-in method _thread.allocate_lock}
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1624(_get_handler)
+        1    0.000    0.000    0.000    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:23(to_uint8)
+        1    0.000    0.000    0.000    0.000 {method 'argsort' of 'numpy.ndarray' objects}
+        9    0.000    0.000    0.000    0.000 {built-in method builtins.locals}
+       30    0.000    0.000    0.000    0.000 {method 'pop' of 'dict' objects}
+       26    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1469(_path_importer_cache)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:86(opengroup)
+        5    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:231(__init__)
+       79    0.000    0.000    0.000    0.000 {built-in method nt.fspath}
+        6    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:216(_compile_charset)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\contextlib.py:104(__init__)
+       12    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\arraysetops.py:125(_unpack_tuple)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:79(__init__)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:645(parent)
+       50    0.000    0.000    0.000    0.000 {built-in method _imp.acquire_lock}
+       14    0.000    0.000    0.000    0.000 {method 'find' of 'bytearray' objects}
+       13    0.000    0.000    0.000    0.000 {method 'split' of 'str' objects}
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:844(__init__)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\bz2.py:26(BZ2File)
+       50    0.000    0.000    0.000    0.000 {built-in method _imp.release_lock}
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:643(_check_name_wrapper)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1130(__init__)
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:597(format)
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\enum.py:202(__get__)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.sorted}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:173(__exit__)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:2107(consume_positionals)
+        5    0.000    0.000    0.000    0.000 {built-in method _imp._fix_co_filename}
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:588(_metavar_formatter)
+        5    0.000    0.000    0.000    0.000 {built-in method _sre.compile}
+       20    0.000    0.000    0.000    0.000 {method 'rfind' of 'str' objects}
+       10    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\enum.py:1129(__new__)
+       10    0.000    0.000    0.000    0.000 {method 'extend' of 'list' objects}
+        7    0.000    0.000    0.000    0.000 {built-in method nt._path_splitroot}
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1633(_check_conflict)
+       28    0.000    0.000    0.000    0.000 {method 'upper' of 'str' objects}
+        8    0.000    0.000    0.000    0.000 {method 'fileno' of '_io.TextIOWrapper' objects}
+        5    0.000    0.000    0.000    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:155(<genexpr>)
+       16    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:83(groups)
+        5    0.000    0.000    0.000    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\color.py:221(<genexpr>)
+        1    0.000    0.000    0.000    0.000 {built-in method numpy.core._multiarray_umath.normalize_axis_index}
+        2    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:274(getuntil)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:501(_requires_builtin_wrapper)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\lzma.py:38(LZMAFile)
+       18    0.000    0.000    0.000    0.000 {method 'find' of 'str' objects}
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:48(_new_module)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:407(_generate_overlap_table)
+       18    0.000    0.000    0.000    0.000 {method '__exit__' of '_thread.RLock' objects}
+        3    0.000    0.000    0.000    0.000 {built-in method fromkeys}
+       22    0.000    0.000    0.000    0.000 {built-in method builtins.callable}
+        7    0.000    0.000    0.000    0.000 {built-in method _imp.find_frozen}
+       10    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:570(isstring)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\functools.py:477(lru_cache)
+       19    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:113(__init__)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\_compression.py:33(DecompressReader)
+       24    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:2416(_all_dispatcher)
+       15    0.000    0.000    0.000    0.000 {built-in method from_bytes}
+        8    0.000    0.000    0.000    0.000 {method 'lstrip' of 'str' objects}
+        5    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:953(fix_flags)
+        6    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:2286(_parse_optional)
+       34    0.000    0.000    0.000    0.000 {built-in method builtins.ord}
+        9    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+       15    0.000    0.000    0.000    0.000 {method 'isalnum' of 'str' objects}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:599(__init__)
+        9    0.000    0.000    0.000    0.000 {built-in method _weakref._remove_dead_weakref}
+       18    0.000    0.000    0.000    0.000 {built-in method _thread.get_ident}
+       20    0.000    0.000    0.000    0.000 {method 'strip' of 'str' objects}
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:206(__init__)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:979(__call__)
+        2    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:304(checkgroupname)
+        9    0.000    0.000    0.000    0.000 {method 'remove' of 'list' objects}
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\enum.py:1292(value)
+        2    0.000    0.000    0.000    0.000 {method 'update' of 'dict' objects}
+        9    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+        6    0.000    0.000    0.000    0.000 {method 'isidentifier' of 'str' objects}
+       14    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\multiarray.py:153(concatenate)
+       12    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:2317(_any_dispatcher)
+       12    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:3987(_percentile_dispatcher)
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:172(__setitem__)
+        4    0.000    0.000    0.000    0.000 {built-in method sys.intern}
+        8    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:428(_get_iscased)
+        5    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:77(__init__)
+       12    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\function_base.py:111(<lambda>)
+       12    0.000    0.000    0.000    0.000 {method 'isascii' of 'str' objects}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:412(__init__)
+        3    0.000    0.000    0.000    0.000 {method 'index' of 'str' objects}
+        4    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:31(_combine_flags)
+        2    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_compiler.py:467(_get_charset_prefix)
+        3    0.000    0.000    0.000    0.000 {method 'group' of 're.Match' objects}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:158(__init__)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:2269(_match_arguments_partial)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:2376(_get_nargs_pattern)
+       12    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\lib\arraysetops.py:133(_unique_dispatcher)
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1153(__init__)
+        2    0.000    0.000    0.000    0.000 {method 'translate' of 'bytearray' objects}
+        6    0.000    0.000    0.000    0.000 {method 'reverse' of 'list' objects}
+        4    0.000    0.000    0.000    0.000 {method '__contains__' of 'frozenset' objects}
+        9    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\_distutils_hack\__init__.py:109(<lambda>)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\_compression.py:9(BaseStream)
+        1    0.000    0.000    0.000    0.000 {method 'reset' of '_contextvars.ContextVar' objects}
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1886(_get_positional_actions)
+        4    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\collections\__init__.py:429(<genexpr>)
+        4    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\re\_parser.py:166(__delitem__)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:653(has_location)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\functools.py:65(wraps)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\shape_base.py:77(_atleast_2d_dispatcher)
+        6    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:2096(_clip_dispatcher)
+        1    0.000    0.000    0.000    0.000 {built-in method numpy.asarray}
+        1    0.000    0.000    0.000    0.000 {built-in method sys._getframemodulename}
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1178(get_filename)
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:986(create_module)
+        3    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:2585(_check_value)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\linalg\linalg.py:2379(_norm_dispatcher)
+        2    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:2508(_cumsum_dispatcher)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\shutil.py:70(SameFileError)
+        1    0.000    0.000    0.000    0.000 <frozen ntpath>:35(_get_bothseps)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1276(__init__)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\argparse.py:1349(__init__)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:2172(_sum_dispatcher)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\shutil.py:67(Error)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:775(_argpartition_dispatcher)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\site-packages\numpy\core\fromnumeric.py:1021(_argsort_dispatcher)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\shutil.py:73(SpecialFileError)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\shutil.py:77(ExecError)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\shutil.py:87(_GiveupOnFastCopy)
+        1    0.000    0.000    0.000    0.000 <string>:1(<module>)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.globals}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.iter}
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\shutil.py:80(ReadError)
+        1    0.000    0.000    0.000    0.000 C:\Anaconda3\Lib\shutil.py:83(RegistryError)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1014(is_package)
+
+
