@@ -1,0 +1,381 @@
+         2608862 function calls (2608772 primitive calls) in 7.468 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.068    0.068    7.468    7.468 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:183(main)
+        1    1.125    1.125    7.375    7.375 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:87(search_color_voting)
+   236587    0.945    0.000    5.347    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:51(parse_hist_text)
+   236587    3.800    0.000    3.800    0.000 {built-in method numpy.fromstring}
+   236593    0.114    0.000    0.648    0.000 {method 'sum' of 'numpy.ndarray' objects}
+   236593    0.058    0.000    0.534    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\_methods.py:47(_sum)
+   236668    0.493    0.000    0.493    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+        1    0.103    0.103    0.275    0.275 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\shape_base.py:219(vstack)
+        1    0.122    0.122    0.172    0.172 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\shape_base.py:81(atleast_2d)
+  1183352    0.168    0.000    0.168    0.000 {method 'append' of 'list' objects}
+        1    0.152    0.152    0.164    0.164 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:59(chi2_distance)
+        1    0.065    0.065    0.131    0.131 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:70(emd1d_per_channel_distance)
+        1    0.068    0.068    0.109    0.109 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:66(hellinger_distance)
+       10    0.000    0.000    0.052    0.005 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:53(_wrapfunc)
+        2    0.000    0.000    0.049    0.025 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:2512(cumsum)
+        2    0.049    0.025    0.049    0.025 {method 'cumsum' of 'numpy.ndarray' objects}
+        1    0.032    0.032    0.043    0.043 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:62(hist_intersection_distance)
+        1    0.030    0.030    0.042    0.042 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\linalg\linalg.py:2383(norm)
+   236732    0.020    0.000    0.020    0.000 {built-in method numpy.asanyarray}
+       30    0.015    0.001    0.015    0.001 {method 'astype' of 'numpy.ndarray' objects}
+        1    0.000    0.000    0.011    0.011 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:162(build_argparser)
+        1    0.011    0.011    0.011    0.011 {imread}
+        1    0.000    0.000    0.011    0.011 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1759(__init__)
+      9/2    0.000    0.000    0.009    0.005 <frozen importlib._bootstrap>:1349(_find_and_load)
+      9/2    0.000    0.000    0.009    0.004 <frozen importlib._bootstrap>:1304(_find_and_load_unlocked)
+      9/2    0.000    0.000    0.008    0.004 <frozen importlib._bootstrap>:911(_load_unlocked)
+        7    0.000    0.000    0.008    0.001 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1434(add_argument)
+      5/2    0.000    0.000    0.008    0.004 <frozen importlib._bootstrap_external>:1020(exec_module)
+        7    0.000    0.000    0.008    0.001 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:2602(_get_formatter)
+        7    0.000    0.000    0.008    0.001 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:162(__init__)
+       24    0.001    0.000    0.007    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:76(to_similarity)
+     20/4    0.000    0.000    0.006    0.002 <frozen importlib._bootstrap>:480(_call_with_frames_removed)
+      5/2    0.000    0.000    0.006    0.003 {built-in method builtins.exec}
+       12    0.000    0.000    0.006    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:3992(percentile)
+        1    0.000    0.000    0.006    0.006 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\shutil.py:1(<module>)
+       12    0.000    0.000    0.005    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:4547(_quantile_unchecked)
+       12    0.000    0.000    0.005    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:3763(_ureduce)
+       12    0.000    0.000    0.005    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:4697(_quantile_ureduce_func)
+       12    0.000    0.000    0.005    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:4765(_quantile)
+       12    0.004    0.000    0.004    0.000 {method 'partition' of 'numpy.ndarray' objects}
+        1    0.000    0.000    0.003    0.003 {method 'mean' of 'numpy.ndarray' objects}
+        1    0.000    0.000    0.003    0.003 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\_methods.py:101(_mean)
+        5    0.000    0.000    0.003    0.001 <frozen importlib._bootstrap_external>:1093(get_code)
+        9    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap>:1240(_find_spec)
+        3    0.000    0.000    0.003    0.001 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\gettext.py:627(gettext)
+        3    0.000    0.000    0.003    0.001 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\gettext.py:587(dgettext)
+        3    0.000    0.000    0.003    0.001 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\gettext.py:528(translation)
+        3    0.000    0.000    0.003    0.001 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\gettext.py:488(find)
+        1    0.000    0.000    0.003    0.003 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:779(argpartition)
+       13    0.003    0.000    0.003    0.000 {method 'execute' of 'sqlite3.Cursor' objects}
+        1    0.003    0.003    0.003    0.003 {method 'argpartition' of 'numpy.ndarray' objects}
+        7    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap_external>:1551(find_spec)
+        7    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap_external>:1522(_get_spec)
+       19    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap_external>:1624(find_spec)
+        6    0.000    0.000    0.002    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\gettext.py:231(_expand_lang)
+        1    0.000    0.000    0.002    0.002 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\bz2.py:1(<module>)
+        1    0.000    0.000    0.002    0.002 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:38(calc_histogram)
+       31    0.000    0.000    0.002    0.000 <frozen importlib._bootstrap_external>:145(_path_stat)
+       31    0.002    0.000    0.002    0.000 {built-in method nt.stat}
+        3    0.002    0.001    0.002    0.001 {calcHist}
+        1    0.000    0.000    0.002    0.002 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\shape_base.py:215(_vhstack_dispatcher)
+        1    0.002    0.002    0.002    0.002 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\shape_base.py:207(_arrays_for_stack_dispatcher)
+        9    0.000    0.000    0.002    0.000 <frozen importlib._bootstrap>:806(module_from_spec)
+       37    0.000    0.000    0.002    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:71(_wrapreduction)
+        2    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap_external>:1318(create_module)
+        2    0.001    0.001    0.001    0.001 {built-in method _imp.create_dynamic}
+        1    0.000    0.000    0.001    0.001 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:2177(sum)
+        5    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:1214(get_data)
+        1    0.000    0.000    0.001    0.001 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\lzma.py:1(<module>)
+        5    0.001    0.000    0.001    0.000 {built-in method _io.open_code}
+        5    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:782(_compile_bytecode)
+        5    0.001    0.000    0.001    0.000 {built-in method marshal.loads}
+       18    0.000    0.000    0.001    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\__init__.py:287(compile)
+       18    0.000    0.000    0.001    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\__init__.py:330(_compile)
+        1    0.001    0.001    0.001    0.001 {built-in method _sqlite3.connect}
+        4    0.000    0.000    0.001    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:743(compile)
+       89    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:101(_path_join)
+        1    0.000    0.000    0.001    0.001 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\locale.py:1(<module>)
+        7    0.000    0.000    0.001    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\shutil.py:1439(get_terminal_size)
+        7    0.001    0.000    0.001    0.000 {built-in method nt.get_terminal_size}
+        3    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1352(__init__)
+        5    0.000    0.000    0.000    0.000 {built-in method builtins.print}
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:970(parse)
+      7/4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:451(_parse_sub)
+      8/5    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:511(_parse)
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:4730(_get_indexes)
+        6    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:2100(clip)
+        6    0.000    0.000    0.000    0.000 {method 'clip' of 'numpy.ndarray' objects}
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:4565(_quantile_is_valid)
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:576(_code)
+        6    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\_methods.py:90(_clip)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:164(_path_isfile)
+        5    0.000    0.000    0.000    0.000 {method 'read' of '_io.BufferedReader' objects}
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:155(_path_is_mode_type)
+       12    0.000    0.000    0.000    0.000 {built-in method nt._path_exists}
+       24    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:2421(all)
+       11    0.000    0.000    0.000    0.000 {built-in method builtins.__build_class__}
+     16/4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:37(_compile)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:416(__enter__)
+        1    0.000    0.000    0.000    0.000 {method 'close' of 'sqlite3.Connection' objects}
+        2    0.000    0.000    0.000    0.000 {built-in method nt._path_isfile}
+       24    0.000    0.000    0.000    0.000 {method 'flatten' of 'numpy.ndarray' objects}
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\arraysetops.py:138(unique)
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:4641(_lerp)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:513(cache_from_source)
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1233(path_stats)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:733(_init_module_attrs)
+       48    0.000    0.000    0.000    0.000 {method 'any' of 'numpy.generic' objects}
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\arraysetops.py:323(_unique1d)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:304(acquire)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\collections\__init__.py:358(namedtuple)
+        7    0.000    0.000    0.000    0.000 {method 'fetchall' of 'sqlite3.Cursor' objects}
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:632(cached)
+       24    0.000    0.000    0.000    0.000 {method 'all' of 'numpy.generic' objects}
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:642(_get_cached)
+       36    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\numerictypes.py:357(issubdtype)
+       48    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\_methods.py:55(_any)
+        4    0.000    0.000    0.000    0.000 <frozen abc>:105(__new__)
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:2322(any)
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:514(_compile_info)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.eval}
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1619(_get_spec)
+  443/426    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        5    0.000    0.000    0.000    0.000 {method '__exit__' of '_io._IOBase' objects}
+       26    0.000    0.000    0.000    0.000 <frozen os>:711(__getitem__)
+       24    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\_methods.py:61(_all)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1888(parse_args)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1898(parse_known_args)
+       13    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x00007FFF029C28A0}
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1901(_parse_known_args2)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:162(__enter__)
+        6    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\locale.py:381(normalize)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:833(spec_from_file_location)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:997(exec_module)
+      131    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1326(exec_module)
+       99    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:167(__getitem__)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\_compression.py:1(<module>)
+        2    0.000    0.000    0.000    0.000 {built-in method _imp.exec_builtin}
+        9    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\_distutils_hack\__init__.py:101(find_spec)
+       72    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\numerictypes.py:283(issubclass_)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1485(add_argument_group)
+        2    0.000    0.000    0.000    0.000 {built-in method _imp.exec_dynamic}
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:4619(_get_gamma)
+      278    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+      256    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:124(setdefault)
+       12    0.000    0.000    0.000    0.000 <frozen _collections_abc>:808(get)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1667(__init__)
+        6    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:241(_optimize_charset)
+      303    0.000    0.000    0.000    0.000 {method 'endswith' of 'str' objects}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:426(_get_module_lock)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\functools.py:36(update_wrapper)
+       12    0.000    0.000    0.000    0.000 <frozen ntpath>:99(join)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:420(__exit__)
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1868(_add_action)
+        3    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\locale.py:347(_replace_encoding)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:137(_path_split)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1939(_parse_known_args)
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\enum.py:1603(__and__)
+     18/6    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:177(getwidth)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\functools.py:544(decorating_function)
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1689(_add_action)
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:110(<lambda>)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:372(release)
+       26    0.000    0.000    0.000    0.000 <frozen os>:785(encodekey)
+       12    0.000    0.000    0.000    0.000 {method 'sort' of 'numpy.ndarray' objects}
+      198    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:982(find_spec)
+       63    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:260(get)
+       25    0.000    0.000    0.000    0.000 {built-in method builtins.max}
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:190(_path_abspath)
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1580(_get_optional_kwargs)
+      111    0.000    0.000    0.000    0.000 {built-in method builtins.issubclass}
+      106    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:177(_path_isabs)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\_methods.py:67(_count_reduce_items)
+      106    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1495(_add_action)
+       37    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1405(register)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\cProfile.py:121(__exit__)
+        3    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\encodings\__init__.py:43(normalize_encoding)
+       14    0.000    0.000    0.000    0.000 {method 'reshape' of 'numpy.ndarray' objects}
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:561(_format_args)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:989(create_module)
+       93    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:239(__next)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\contextlib.py:303(helper)
+        1    0.000    0.000    0.000    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:172(parse_weights)
+        4    0.000    0.000    0.000    0.000 {built-in method _abc._abc_init}
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:697(_classify_pyc)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.next}
+       26    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:175(append)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+       10    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:371(_escape)
+        2    0.000    0.000    0.000    0.000 {built-in method _imp.create_builtin}
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\contextlib.py:145(__exit__)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:74(__new__)
+       39    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:163(__len__)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:82(remove)
+       40    0.000    0.000    0.000    0.000 {method 'lower' of 'str' objects}
+       46    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+       27    0.000    0.000    0.000    0.000 {method 'ravel' of 'numpy.ndarray' objects}
+       30    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:139(<genexpr>)
+      102    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:491(_verbose_message)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\_ufunc_config.py:452(_no_nep50_warning)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:89(_unpack_uint32)
+        1    0.000    0.000    0.000    0.000 <frozen ntpath>:254(basename)
+       87    0.000    0.000    0.000    0.000 {method 'setdefault' of 'dict' objects}
+       32    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1226(__exit__)
+        8    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:401(_simple)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\contextlib.py:136(__enter__)
+        9    0.000    0.000    0.000    0.000 {method 'format' of 'str' objects}
+        9    0.000    0.000    0.000    0.000 {built-in method builtins.locals}
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:730(_validate_timestamp_pyc)
+       47    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+       65    0.000    0.000    0.000    0.000 {method 'replace' of 'str' objects}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:445(cb)
+       49    0.000    0.000    0.000    0.000 {built-in method nt._path_splitroot_ex}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:662(spec_from_loader)
+        1    0.000    0.000    0.000    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:23(to_uint8)
+        6    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:214(_compile_charset)
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\enum.py:1585(_get_value)
+        1    0.000    0.000    0.000    0.000 <frozen ntpath>:222(split)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:232(__init__)
+       26    0.000    0.000    0.000    0.000 <frozen os>:779(check_str)
+       32    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1222(__enter__)
+        5    0.000    0.000    0.000    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:195(<genexpr>)
+        6    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:912(__init__)
+       58    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:255(match)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\bz2.py:26(BZ2File)
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\enum.py:695(__call__)
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1614(_pop_action_class)
+        9    0.000    0.000    0.000    0.000 {built-in method _imp.is_builtin}
+       20    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:292(tell)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:1025(argsort)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\contextlib.py:108(__init__)
+        7    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1128(find_spec)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:389(_mk_bitmap)
+       19    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1409(_registry_get)
+       42    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 {method 'conj' of 'numpy.ndarray' objects}
+        8    0.000    0.000    0.000    0.000 {method 'match' of 're.Pattern' objects}
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\arraysetops.py:125(_unpack_tuple)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:79(__init__)
+       42    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:448(_uniq)
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:230(__init__)
+       26    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1500(_path_importer_cache)
+       19    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:67(_relax_case)
+       17    0.000    0.000    0.000    0.000 {built-in method builtins.setattr}
+       12    0.000    0.000    0.000    0.000 {built-in method numpy.empty}
+       27    0.000    0.000    0.000    0.000 {method 'pop' of 'dict' objects}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:173(__exit__)
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:439(_get_literal_prefix)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:645(parent)
+       50    0.000    0.000    0.000    0.000 {built-in method _imp.release_lock}
+       13    0.000    0.000    0.000    0.000 {method 'split' of 'str' objects}
+        3    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1618(_get_handler)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:97(closegroup)
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:800(__init__)
+        1    0.000    0.000    0.000    0.000 {method 'reset' of '_contextvars.ContextVar' objects}
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\lzma.py:38(LZMAFile)
+        7    0.000    0.000    0.000    0.000 {built-in method nt._path_splitroot}
+       50    0.000    0.000    0.000    0.000 {built-in method _imp.acquire_lock}
+        5    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:2533(_get_value)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.sorted}
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:674(_check_name_wrapper)
+       26    0.000    0.000    0.000    0.000 {method 'upper' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:2111(consume_positionals)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.sum}
+       30    0.000    0.000    0.000    0.000 {built-in method nt.fspath}
+       18    0.000    0.000    0.000    0.000 {method '__exit__' of '_thread.RLock' objects}
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:273(getuntil)
+        1    0.000    0.000    0.000    0.000 {method 'argsort' of 'numpy.ndarray' objects}
+       15    0.000    0.000    0.000    0.000 {method 'isalnum' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:85(opengroup)
+       16    0.000    0.000    0.000    0.000 {method 'strip' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:501(_requires_builtin_wrapper)
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:48(_new_module)
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\enum.py:199(__get__)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1106(__init__)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\functools.py:504(lru_cache)
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:82(groups)
+       14    0.000    0.000    0.000    0.000 {method 'find' of 'bytearray' objects}
+        4    0.000    0.000    0.000    0.000 {built-in method _sre.compile}
+       33    0.000    0.000    0.000    0.000 {built-in method builtins.ord}
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:554(format)
+       20    0.000    0.000    0.000    0.000 {method 'rfind' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method numpy.core._multiarray_umath.normalize_axis_index}
+        7    0.000    0.000    0.000    0.000 {method 'fileno' of '_io.TextIOWrapper' objects}
+        8    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:573(isstring)
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:954(fix_flags)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:410(_generate_overlap_table)
+       17    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:112(__init__)
+        9    0.000    0.000    0.000    0.000 {method 'remove' of 'list' objects}
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:546(_metavar_formatter)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:599(__init__)
+       18    0.000    0.000    0.000    0.000 {built-in method _thread.get_ident}
+       15    0.000    0.000    0.000    0.000 {built-in method from_bytes}
+        9    0.000    0.000    0.000    0.000 {built-in method _weakref._remove_dead_weakref}
+        7    0.000    0.000    0.000    0.000 {built-in method _imp.find_frozen}
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1627(_check_conflict)
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\enum.py:1152(__new__)
+       24    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:2416(_all_dispatcher)
+        2    0.000    0.000    0.000    0.000 {built-in method fromkeys}
+        1    0.000    0.000    0.000    0.000 {method 'cursor' of 'sqlite3.Connection' objects}
+       18    0.000    0.000    0.000    0.000 {method 'find' of 'str' objects}
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:204(__init__)
+       19    0.000    0.000    0.000    0.000 {built-in method builtins.callable}
+        9    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+        2    0.000    0.000    0.000    0.000 {method 'update' of 'dict' objects}
+        7    0.000    0.000    0.000    0.000 {method 'lstrip' of 'str' objects}
+       14    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\multiarray.py:153(concatenate)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\_compression.py:33(DecompressReader)
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:3987(_percentile_dispatcher)
+        9    0.000    0.000    0.000    0.000 {built-in method _thread.allocate_lock}
+        5    0.000    0.000    0.000    0.000 c:\Users\Asus Zenbook\OneDrive\Dokumente\GITHUB\BigData\src\similarity\hash.py:142(<genexpr>)
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\function_base.py:111(<lambda>)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:303(checkgroupname)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:470(_get_charset_prefix)
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\lib\arraysetops.py:133(_unique_dispatcher)
+        7    0.000    0.000    0.000    0.000 {method 'extend' of 'list' objects}
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:412(__init__)
+        8    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:171(__setitem__)
+       12    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:2317(_any_dispatcher)
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:76(__init__)
+        6    0.000    0.000    0.000    0.000 {method 'isidentifier' of 'str' objects}
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_parser.py:165(__delitem__)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:158(__init__)
+        7    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\enum.py:1333(value)
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1184(__init__)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\functools.py:66(wraps)
+        6    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:431(_get_iscased)
+        1    0.000    0.000    0.000    0.000 {built-in method numpy.asarray}
+       12    0.000    0.000    0.000    0.000 {method 'isascii' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {method 'set' of '_contextvars.ContextVar' objects}
+        5    0.000    0.000    0.000    0.000 {built-in method _imp._fix_co_filename}
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:2298(_match_arguments_partial)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:2508(_cumsum_dispatcher)
+        6    0.000    0.000    0.000    0.000 {method 'reverse' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 <frozen ntpath>:34(_get_bothseps)
+        9    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\_distutils_hack\__init__.py:108(<lambda>)
+        6    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:2096(_clip_dispatcher)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\_compression.py:9(BaseStream)
+        9    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:653(has_location)
+        2    0.000    0.000    0.000    0.000 {method 'translate' of 'bytearray' objects}
+        4    0.000    0.000    0.000    0.000 {method '__contains__' of 'frozenset' objects}
+        4    0.000    0.000    0.000    0.000 {built-in method sys.intern}
+        4    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\collections\__init__.py:432(<genexpr>)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\linalg\linalg.py:2379(_norm_dispatcher)
+        3    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+        3    0.000    0.000    0.000    0.000 {method 'index' of 'str' objects}
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1017(create_module)
+        5    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1209(get_filename)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1880(_get_positional_actions)
+        2    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\re\_compiler.py:31(_combine_flags)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\shape_base.py:77(_atleast_2d_dispatcher)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\shutil.py:70(SameFileError)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\shutil.py:67(Error)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:775(_argpartition_dispatcher)
+        1    0.000    0.000    0.000    0.000 <string>:1(<module>)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1307(__init__)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\argparse.py:1337(__init__)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:1021(_argsort_dispatcher)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\shutil.py:77(ExecError)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\shutil.py:73(SpecialFileError)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\shutil.py:80(ReadError)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\shutil.py:87(_GiveupOnFastCopy)
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.globals}
+        1    0.000    0.000    0.000    0.000 {built-in method sys._getframemodulename}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1014(is_package)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\core\fromnumeric.py:2172(_sum_dispatcher)
+        1    0.000    0.000    0.000    0.000 C:\Users\Asus Zenbook\AppData\Local\Programs\Python\Python313\Lib\shutil.py:83(RegistryError)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.iter}
+
+
