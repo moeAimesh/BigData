@@ -1,8 +1,9 @@
 import sqlite3
 import numpy as np
-from typing import List, Tuple, Dict, Any, Optional
+from typing import List, Tuple, Dict, Any, Optional, Union
 from PIL import Image
 import imagehash
+
 # ---------- Helpers ----------
 def _parse_hash_value(v) -> Optional[np.uint64]:
     """Akzeptiert int/str/bytes/None. Erkennt HEX (0x.. / a-f), BIN (0/1) oder Dezimal."""
@@ -16,13 +17,13 @@ def _parse_hash_value(v) -> Optional[np.uint64]:
         s = v.strip().lower()
         if s.startswith("0x") or any(c in s for c in "abcdef"):
             return np.uint64(int(s, 16))
-        if set(s) <= {"0","1"} and len(s) >= 32:
+        if set(s) <= {"0", "1"} and len(s) >= 32:
             return np.uint64(int(s, 2))
         return np.uint64(int(s))
     return np.uint64(int(v))
 
 def _bit_norm(bits_guess_from_q: int, db_max: int) -> int:
-    """Bestimmt eine sinnvolle Normlänge in Bits (64/128/256)."""
+    """Bestimmt eine sinnvolle Normlänge in Bits (64/128/256). Hinweis: Hamming unten ist 64-bit-optimiert."""
     max_bits = max(bits_guess_from_q, int(db_max).bit_length())
     norm_bits = int(np.ceil(max_bits / 8.0) * 8)
     if norm_bits <= 64:  return 64
@@ -30,6 +31,7 @@ def _bit_norm(bits_guess_from_q: int, db_max: int) -> int:
     return 256
 
 def _hamming_uint64_vec(db_hashes: np.ndarray, q: np.uint64) -> np.ndarray:
+    """Hamming-Distanz für 64-bit-Hashes (imagehash mit hash_size=8 -> 64 Bit)."""
     x = np.bitwise_xor(db_hashes, q)
     b = x.view(np.uint8).reshape(-1, 8)  # 64 Bit -> 8 Bytes
     return np.unpackbits(b, axis=1).sum(axis=1)
@@ -38,12 +40,52 @@ def _topk_indices(arr: np.ndarray, k: int) -> np.ndarray:
     if arr.size == 0:
         return np.array([], dtype=int)
     k = min(k, arr.shape[0])
-    idx = np.argpartition(arr, k-1)[:k]
+    idx = np.argpartition(arr, k - 1)[:k]
     return idx[np.argsort(arr[idx])]
 
 def _column_exists(cur: sqlite3.Cursor, table: str, col: str) -> bool:
     cur.execute(f"PRAGMA table_info({table})")
     return any(row[1] == col for row in cur.fetchall())
+
+# ---------- Query-aware Gewichtung (Variante 1) ----------
+def _softmax(x, temp=6.0) -> np.ndarray:
+    x = np.asarray(x, dtype=np.float64)
+    x = x - x.max()
+    ex = np.exp(x * temp)
+    return ex / (ex.sum() + 1e-12)
+
+def _margin_confidence(dists: np.ndarray, norm_bits: int, top_idx: np.ndarray) -> float:
+    """Trennschärfe: Mittel der Top-5-Ähnlichkeiten minus Median der Top-k (>=0)."""
+    if top_idx.size == 0:
+        return 0.0
+    s = 1.0 - (dists[top_idx] / float(norm_bits))  # in [0,1]
+    q = int(min(5, s.size))
+    top_mean = np.partition(s, -q)[-q:].mean()
+    med = float(np.median(s))
+    return max(0.0, top_mean - med)
+
+def _auto_hash_weights(
+    da: np.ndarray, dd: np.ndarray, dp: np.ndarray,
+    normA: int, normD: int, normP: int,
+    ia: np.ndarray, id_: np.ndarray, ip: np.ndarray,
+    temp: float = 6.0
+) -> np.ndarray:
+    # 1) Trennschärfe je Hash
+    ca = _margin_confidence(da, normA, ia)
+    cd = _margin_confidence(dd, normD, id_)
+    cp = _margin_confidence(dp, normP, ip)
+
+    # 2) Überlappung der Top-Listen als Verstärker
+    Sa, Sd, Sp = set(ia.tolist()), set(id_.tolist()), set(ip.tolist())
+    k = max(1, len(ia))
+    ov_a = (len(Sa & Sd) + len(Sa & Sp)) / (2.0 * k)
+    ov_d = (len(Sd & Sa) + len(Sd & Sp)) / (2.0 * k)
+    ov_p = (len(Sp & Sa) + len(Sp & Sd)) / (2.0 * k)
+
+    raw = np.array([ca * (1.0 + ov_a), cd * (1.0 + ov_d), cp * (1.0 + ov_p)], dtype=np.float64)
+    if raw.max() <= 1e-12:
+        return np.array([1/3, 1/3, 1/3], dtype=np.float64)
+    return _softmax(raw, temp=temp)
 
 # ---------- Hauptfunktion ----------
 def search_by_hash_voting_multitables(
@@ -51,18 +93,19 @@ def search_by_hash_voting_multitables(
     q_ahash: int, q_dhash: int, q_phash: int,
     table_prefix: str = "image_features_part_",
     parts: int = 7,
-    weights: Tuple[float, float, float] = (1.0, 1.0, 1.0),
+    weights: Union[Tuple[float, float, float], str] = (1.0, 1.0, 1.0),  # auch "auto" möglich
     topk_per_hash: int = 200,
-    final_k: int = 20
-) -> List[Dict[str, Any]]:
+    final_k: int = 20,
+    return_weights: bool = False
+) -> Union[List[Dict[str, Any]], Tuple[List[Dict[str, Any]], Tuple[float, float, float]]]:
     """
     Durchsucht image_features_part_1..N und kombiniert aHash/dHash/pHash per Voting.
-    Erwartete Spalten: id, image_hash, dhash, phash, [optional: filepath]
+    Erwartete Spalten: id, image_hash, dhash, phash, [optional: path]
     """
     con = sqlite3.connect(db_path)
     cur = con.cursor()
 
-    tables = [f"{table_prefix}{i}" for i in range(1, parts+1)]
+    tables = [f"{table_prefix}{i}" for i in range(1, parts + 1)]
     filepath_exists = {t: _column_exists(cur, t, "path") for t in tables}
 
     all_A, all_D, all_P = [], [], []
@@ -96,12 +139,12 @@ def search_by_hash_voting_multitables(
         all_P.append(np.array(P, dtype=np.uint64))
         meta_ids.append(np.array(IDs, dtype=np.int64))
         meta_paths.append(np.array(PATHS, dtype=object))
-        meta_tables.extend([t]*len(IDs))
+        meta_tables.extend([t] * len(IDs))
 
     con.close()
 
     if not all_A:
-        return []
+        return ([], (1/3, 1/3, 1/3)) if return_weights else []
 
     A = np.concatenate(all_A)
     D = np.concatenate(all_D)
@@ -110,60 +153,78 @@ def search_by_hash_voting_multitables(
     PATHS = np.concatenate(meta_paths)
     TABLES = np.array(meta_tables, dtype=object)
 
+    # Normierung (64/128/256) – Hash-Bits des Queries vs. DB-Max
     normA = _bit_norm(int(q_ahash).bit_length(), int(A.max()))
     normD = _bit_norm(int(q_dhash).bit_length(), int(D.max()))
     normP = _bit_norm(int(q_phash).bit_length(), int(P.max()))
 
+    # Hamming-Distanzen
     da = _hamming_uint64_vec(A, np.uint64(q_ahash))
     dd = _hamming_uint64_vec(D, np.uint64(q_dhash))
     dp = _hamming_uint64_vec(P, np.uint64(q_phash))
 
+    # Top-k je Hash
     ia = _topk_indices(da, topk_per_hash)
     id_ = _topk_indices(dd, topk_per_hash)
     ip = _topk_indices(dp, topk_per_hash)
+
+    # Kandidatenmenge
     cand = np.unique(np.concatenate([ia, id_, ip]))
     if cand.size == 0:
-        return []
+        return ([], (1/3, 1/3, 1/3)) if return_weights else []
 
+    # Gewichte wählen
+    if isinstance(weights, str) and weights.lower() == "auto":
+        w = _auto_hash_weights(da, dd, dp, normA, normD, normP, ia, id_, ip, temp=6.0)
+    else:
+        w = np.asarray(weights, dtype=np.float64)
+        w = w / (w.sum() + 1e-12)
+
+    # Similarities (größer = besser)
     sa = 1.0 - (da[cand] / float(normA))
     sd = 1.0 - (dd[cand] / float(normD))
     sp = 1.0 - (dp[cand] / float(normP))
-    w_a, w_d, w_p = weights
-    score = w_a*sa + w_d*sd + w_p*sp
 
+    score = w[0] * sa + w[1] * sd + w[2] * sp
     order = np.argsort(-score)[:final_k]
 
     out: List[Dict[str, Any]] = []
     for pos in order:
         i = int(cand[pos])
-        sc = float(score[pos])  # Score passend zum sortierten Index
         out.append({
             "table": str(TABLES[i]),
             "id": int(IDs[i]),
             "path": (None if PATHS[i] is None else str(PATHS[i])),
             "hamming": {"ahash": int(da[i]), "dhash": int(dd[i]), "phash": int(dp[i])},
-            "score": sc
+            "score": float(score[pos])
         })
-    return out
 
-def compute_query_hashes(path, hash_size=8):
+    return (out, (float(w[0]), float(w[1]), float(w[2]))) if return_weights else out
+
+# ---------- Query-Hashes berechnen ----------
+def compute_query_hashes(path: str, hash_size: int = 8) -> Tuple[int, int, int]:
+    """Erzeugt aHash/dHash/pHash (Standard: 64 Bit bei hash_size=8)."""
     img = Image.open(path).convert("RGB")
-    ah = imagehash.average_hash(img, hash_size=hash_size)  # 8x8 -> 64 Bit
+    ah = imagehash.average_hash(img, hash_size=hash_size)
     dh = imagehash.dhash(img,       hash_size=hash_size)
     ph = imagehash.phash(img,       hash_size=hash_size)
-    # sichere Integer-Repräsentation (funktioniert immer)
-    q_ahash = int(str(ah), 16)
-    q_dhash = int(str(dh), 16)
-    q_phash = int(str(ph), 16)
-    return q_ahash, q_dhash, q_phash
+    return int(str(ah), 16), int(str(dh), 16), int(str(ph), 16)
 
-# ------- Beispielaufruf -------
-q_ahash, q_dhash, q_phash = compute_query_hashes(r"D:\\data\\image_data\\Fruits_Vegetables\\train\\lettuce\\Image_38.jpg")
-results = search_by_hash_voting_multitables(
-    db_path=r"C:\BIG_DATA\data\database.db",
-    q_ahash=q_ahash, q_dhash=q_dhash, q_phash=q_phash,
-    weights=(1.0, 0.9, 1.2),  # z.B. pHash etwas höher
-    topk_per_hash=300, final_k=5
-)
-for r in results:
-     print(r)
+# ---------- Minimalbeispiel ----------
+if __name__ == "__main__":
+    # Beispielpfade anpassen:
+    QUERY_IMG = r"Z:\CODING\UNI\BIG_DATA\data\TEST_IMAGES\ga-traisen-katze-emma-am-9937-scaled.jpg"
+    DB_PATH   = r"C:\BIG_DATA\data\database.db"
+
+    q_ah, q_dh, q_ph = compute_query_hashes(QUERY_IMG)
+    results, w = search_by_hash_voting_multitables(
+        db_path=DB_PATH,
+        q_ahash=q_ah, q_dhash=q_dh, q_phash=q_ph,
+        weights="auto",          # <-- dynamische Gewichte
+        topk_per_hash=300,
+        final_k=6,
+        return_weights=True
+    )
+    print("Gewichte (a,d,p):", w)
+    for r in results:
+        print(r)
