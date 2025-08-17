@@ -1,9 +1,9 @@
 # cascade_search_3stage_json_umap_separate_models_FIXED_DBHIST_RGB.py
 # 3-stufige Suche (32 -> 64 -> 512) + finales Fusions-Re-Ranking (cos512, Farbe aus DB, optional SSIM/LPIPS)
-# - Query-Histogramm: nutzt deine calc_histogram()-Funktion (BGR, 3×bins)
+# - Query-Histogramm: nutzt calc_histogram()-Funktion (BGR, 3×bins)
 # - DB-Histogramme: TEXT (csv) mit 96 Werten (3×32 Bins), L1-normalisiert
 # - HNSW 32D + 64D/512D Re-Ranking
-# - Optional: UMAP-Plot (ausgelassen, falls nicht benötigt)
+# - Optional: UMAP-Plot
 
 import os, sys, argparse, sqlite3, pickle, json
 from pathlib import Path
@@ -29,12 +29,10 @@ except ImportError:
         ) from e
 
 # ===================== DEIN COLOR-HIST IMPORT =====================
-# Ersetzt die Query-Hist-Berechnung. calc_histogram erwartet BGR uint8/float und liefert 3*bins L1-normalisiert.
 try:
-    # Passe das ggf. an deinen Pfad an, z.B. from utils.color_hist import calc_histogram
     from .color_vec import calc_histogram
 except Exception:
-    # Fallback (falls der Import mal nicht klappt): kompatible Minimal-Implementierung
+    # Fallback (falls der Import mal nicht klappt)
     def calc_histogram(img, bins=32):
         if img is None:
             raise ValueError("img is None")
@@ -61,7 +59,7 @@ except Exception:
 MODELS_DIR        = Path(r"C:\BIG_DATA\models")
 IPCA_PATH         = MODELS_DIR / "ipca.joblib"   # IncrementalPCA (64D)
 
-# UMAP (optional – kann auf Wunsch genutzt/abgeschaltet werden)
+# UMAP
 UMAP32_PATH       = MODELS_DIR / "umap32_reducer.joblib"
 UMAP64_PATH       = MODELS_DIR / "umap_reducer.joblib"
 UMAP512_PATH      = MODELS_DIR / "umap512_reducer.joblib"
@@ -75,7 +73,7 @@ INDEX_BIN   = INDEX_DIR / "hnsw_32d.bin"
 INDEX_META  = INDEX_DIR / "labels_meta.pkl"
 HNSW_M              = 16
 HNSW_EF_CONSTRUCT   = 200
-HNSW_EF_SEARCH      = 200
+HNSW_EF_SEARCH      = 120
 
 # DB Tabellen / Spalten
 TABLE_PREFIX    = "image_features_part_"
@@ -88,8 +86,7 @@ COL_EMB512_PATH = "embedding_path" # 512D .npy
 # UMAP-Spalten (falls vorhanden)
 UMAP_COLS = {32: ("umap32_x","umap32_y"), 64: ("umap_x","umap_y"), 512: ("umap512_x","umap512_y")}
 
-# Farb-Histogramm-Spalte (TEXT, csv, 96 Werte = 3×32 Bins aus B,G,R)
-HIST_COL         = "color_hist"  # <--- ggf. exakt auf deinen Spaltennamen anpassen
+HIST_COL         = "color_hist"  # 
 COLOR_BINS       = 32
 COLOR_DIM_EXPECT = 3 * COLOR_BINS
 
