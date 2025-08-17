@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 DB_PATH = r"C:\BIG_DATA\data\database.db"
 TABLES = [f"image_features_part_{i}" for i in range(1, 8)]
 COLS = ["image_hash", "dhash", "phash"]
-BITS = 64  # bei Bedarf auf 128/256 anpassen
+BITS = 64  
+
 
 # ---------- Helper ----------
 def _parse_to_uint64_list(vals):
@@ -24,10 +25,10 @@ def _parse_to_uint64_list(vals):
         elif isinstance(v, (bytes, bytearray)):
             b = bytes(v)
             if len(b) < 8:
-                b = b'\x00' * (8 - len(b)) + b
+                b = b"\x00" * (8 - len(b)) + b
             else:
                 b = b[-8:]  # falls länger, nur die letzten 8 Bytes (LSB) nehmen
-            out[i] = np.frombuffer(b, dtype='>u8')[0]  # big-endian lesen
+            out[i] = np.frombuffer(b, dtype=">u8")[0]  # big-endian lesen
         elif isinstance(v, str):
             s = v.strip().lower()
             base = 16 if (s.startswith("0x") or any(c in s for c in "abcdef")) else 10
@@ -35,6 +36,7 @@ def _parse_to_uint64_list(vals):
         else:
             out[i] = np.uint64(int(v))
     return out
+
 
 def _bits_msb_to_lsb_uint64(arr_uint64):
     """
@@ -44,6 +46,7 @@ def _bits_msb_to_lsb_uint64(arr_uint64):
     be = arr_uint64.byteswap().view(np.uint8).reshape(-1, 8)  # big-endian Bytes
     bits = np.unpackbits(be, axis=1)  # (N, 8*8)
     return bits
+
 
 # ---------- Aggregation ----------
 conn = sqlite3.connect(DB_PATH)
@@ -63,7 +66,10 @@ for table in TABLES:
 
     # Alle drei Spalten (sofern vorhanden) in einem Rutsch selektieren
     sel_cols = ", ".join(needed)
-    cur.execute(f"SELECT {sel_cols} FROM {table} WHERE " + " OR ".join([f"{c} IS NOT NULL" for c in needed]))
+    cur.execute(
+        f"SELECT {sel_cols} FROM {table} WHERE "
+        + " OR ".join([f"{c} IS NOT NULL" for c in needed])
+    )
     rows = cur.fetchall()
     if not rows:
         continue
@@ -98,10 +104,14 @@ for table in TABLES:
 conn.close()
 
 # ---------- Mittelwerte berechnen ----------
-bit_means = {c: (sum_bits[c] / count_rows[c]) if count_rows[c] > 0 else None for c in COLS}
+bit_means = {
+    c: (sum_bits[c] / count_rows[c]) if count_rows[c] > 0 else None for c in COLS
+}
 
 # ---------- Plot ----------
-fig, axes = plt.subplots(nrows=len(COLS), ncols=1, figsize=(12, 3*len(COLS)), sharex=True)
+fig, axes = plt.subplots(
+    nrows=len(COLS), ncols=1, figsize=(12, 3 * len(COLS)), sharex=True
+)
 if len(COLS) == 1:
     axes = [axes]
 

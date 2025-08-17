@@ -1,4 +1,4 @@
-#probleme in import gehabt deshaln denselben file aus features hier gepackt 
+# probleme in import gehabt deshaln denselben file aus features hier gepackt
 
 
 import torch
@@ -19,6 +19,7 @@ resnet.eval().to(device)
 mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
 std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
 
+
 # ========== PREPROCESS ==========
 def preprocess_image_np(img):
     """
@@ -36,8 +37,10 @@ def preprocess_image_np(img):
         if img is None:
             raise ValueError(f"cv2.imdecode konnte Bild nicht lesen: {p}")
     img = cv2.resize(img, (224, 224), interpolation=cv2.INTER_LINEAR)
-    img = np.transpose(img, (2, 0, 1)).astype(np.float32) / 255.0  # HWC → CHW + Normalisierung
-    img = (img - mean[:, None, None]) / std[:, None, None]         # Broadcasting auf CHW
+    img = (
+        np.transpose(img, (2, 0, 1)).astype(np.float32) / 255.0
+    )  # HWC → CHW + Normalisierung
+    img = (img - mean[:, None, None]) / std[:, None, None]  # Broadcasting auf CHW
     return torch.from_numpy(img)
 
 

@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 
+
 def to_uint8(img):
     if img is None:
         raise ValueError("img is None")
@@ -20,6 +21,7 @@ def to_uint8(img):
     im = np.clip(im, 0, 255).astype(np.uint8)
     return im
 
+
 def calc_histogram(img, bins=32):
     """
     Erwartet BGR, gibt Feature-Vektor mit 3*bins zurück (B, G, R).
@@ -34,8 +36,8 @@ def calc_histogram(img, bins=32):
         h = h.ravel().astype(np.float32)
         hists.append(h)
 
-    hist = np.concatenate(hists)                # Länge: 3*bins
+    hist = np.concatenate(hists)  # Länge: 3*bins
     s = hist.sum()
     if s > 0:
-        hist /= s                               # L1-Normierung
+        hist /= s  # L1-Normierung
     return hist

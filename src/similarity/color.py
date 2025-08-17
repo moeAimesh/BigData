@@ -1,6 +1,3 @@
-# color_search_variantA_args.py
-# -*- coding: utf-8 -*-
-
 import argparse
 import sqlite3
 from typing import List, Dict, Any, Sequence, Optional
@@ -8,27 +5,28 @@ from typing import List, Dict, Any, Sequence, Optional
 import cv2
 import numpy as np
 
-# ======================== FIXED CONFIG ========================
-HIST_COL      = "color_hist"
-TABLE_PREFIX  = "image_features_part_"
-BINS          = 32
-DIM           = 3 * BINS
-DO_SWAP_RB    = True  # Query [B|G|R] -> [R|G|B] zum DB-Match
+# ======================== CONFIG ========================
+HIST_COL = "color_hist"
+TABLE_PREFIX = "image_features_part_"
+BINS = 32
+DIM = 3 * BINS
+DO_SWAP_RB = True  # Query [B|G|R] -> [R|G|B] zum DB-Match
 
 DEFAULT_METRICS = ("chi2", "hellinger", "intersect", "emd")
 
 PRESET_WEIGHTS = {
-    "balanced":   {"chi2": 1.8, "hellinger": 1.0, "intersect": 0.2, "emd": 1.3},
-    "two_color":  {"chi2": 2.2, "hellinger": 0.8, "intersect": 0.0, "emd": 1.5},
-    "flat_logo":  {"chi2": 1.0, "hellinger": 0.8, "intersect": 1.2, "emd": 0.5},
+    "balanced": {"chi2": 1.8, "hellinger": 1.0, "intersect": 0.2, "emd": 1.3},
+    "two_color": {"chi2": 2.2, "hellinger": 0.8, "intersect": 0.0, "emd": 1.5},
+    "flat_logo": {"chi2": 1.0, "hellinger": 0.8, "intersect": 1.2, "emd": 0.5},
 }
 USE_PRESET: Optional[str] = None  # None => Auto-Weights
+
 
 # ======================== AUTO-WEIGHTS ========================
 def auto_weights(q: np.ndarray, bins: int = 32) -> Dict[str, float]:
     ch = q.reshape(3, bins).sum(axis=1)  # (B,G,R)
-    p  = q[q > 0]
-    H  = -(p * np.log(p)).sum() / np.log(q.size) if p.size else 0.0
+    p = q[q > 0]
+    H = -(p * np.log(p)).sum() / np.log(q.size) if p.size else 0.0
 
     w = {"chi2": 1.8, "hellinger": 1.0, "intersect": 0.2, "emd": 1.3}
     if H < 0.55:  # einfarbig/geringe Entropie
@@ -36,6 +34,7 @@ def auto_weights(q: np.ndarray, bins: int = 32) -> Dict[str, float]:
     if (ch > ch.sum() * 0.40).sum() == 2:  # zwei dominante Kanäle
         w.update({"chi2": 2.2, "emd": 1.6, "intersect": 0.0})
     return w
+
 
 # ======================== UTILS ========================
 def to_uint8(img: np.ndarray) -> np.ndarray:
@@ -52,11 +51,16 @@ def to_uint8(img: np.ndarray) -> np.ndarray:
         im *= 255.0
     return np.clip(im, 0, 255).astype(np.uint8)
 
+
 def calc_histogram(img_bgr: np.ndarray, bins: int = BINS) -> np.ndarray:
     img_u8 = to_uint8(img_bgr)
     hists = []
     for ch in (0, 1, 2):  # B,G,R
-        h = cv2.calcHist([img_u8], [ch], None, [bins], [0, 256]).ravel().astype(np.float32)
+        h = (
+            cv2.calcHist([img_u8], [ch], None, [bins], [0, 256])
+            .ravel()
+            .astype(np.float32)
+        )
         hists.append(h)
     hist = np.concatenate(hists)
     s = hist.sum()
@@ -64,11 +68,13 @@ def calc_histogram(img_bgr: np.ndarray, bins: int = BINS) -> np.ndarray:
         hist /= s
     return hist
 
+
 def swap_rb_hist(v: np.ndarray, bins: int = BINS) -> np.ndarray:
-    b, g, r = v[:bins], v[bins:2 * bins], v[2 * bins:]
+    b, g, r = v[:bins], v[bins : 2 * bins], v[2 * bins :]
     out = np.concatenate([r, g, b])
-    out /= (out.sum() + 1e-12)
+    out /= out.sum() + 1e-12
     return out
+
 
 def parse_hist_text(s: str) -> np.ndarray:
     v = np.fromstring(s, dtype=np.float32, sep=",")
@@ -77,31 +83,44 @@ def parse_hist_text(s: str) -> np.ndarray:
     ss = float(v.sum())
     return v / ss if ss > 0 else v
 
-def list_feature_tables(con: sqlite3.Connection, prefix: str = TABLE_PREFIX) -> List[str]:
+
+def list_feature_tables(
+    con: sqlite3.Connection, prefix: str = TABLE_PREFIX
+) -> List[str]:
     cur = con.cursor()
-    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE ?", (f"{prefix}%",))
+    cur.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE ?",
+        (f"{prefix}%",),
+    )
     return [r[0] for r in cur.fetchall()]
+
 
 # ======================== DISTANCES & FUSION ========================
 def chi2_distance(X: np.ndarray, q: np.ndarray, eps: float = 1e-12) -> np.ndarray:
     return 0.5 * (((X - q) ** 2) / (X + q + eps)).sum(axis=1)
 
+
 def hist_intersection_distance(X: np.ndarray, q: np.ndarray) -> np.ndarray:
     sim = np.minimum(X, q).sum(axis=1)
     return 1.0 - sim
+
 
 def hellinger_distance(X: np.ndarray, q: np.ndarray) -> np.ndarray:
     sqX = np.sqrt(X)
     sqq = np.sqrt(q)
     return np.linalg.norm(sqX - sqq, axis=1) / np.sqrt(2.0)
 
-def emd1d_per_channel_distance(X: np.ndarray, q: np.ndarray, bins: int = BINS) -> np.ndarray:
+
+def emd1d_per_channel_distance(
+    X: np.ndarray, q: np.ndarray, bins: int = BINS
+) -> np.ndarray:
     Xr = X.reshape(-1, 3, bins)
     qr = q.reshape(3, bins)
     cX = np.cumsum(Xr, axis=2)
     cq = np.cumsum(qr, axis=1)
     emd = np.abs(cX - cq).sum(axis=2).mean(axis=1) / (bins - 1)
     return emd.astype(np.float32)
+
 
 def to_similarity(metric: str, d: np.ndarray) -> np.ndarray:
     m = metric.lower()
@@ -113,6 +132,7 @@ def to_similarity(metric: str, d: np.ndarray) -> np.ndarray:
         return 1.0 - np.clip((d - p5) / denom, 0.0, 1.0)
     raise ValueError(f"unknown metric: {metric}")
 
+
 # ======================== UNIVERSAL CONSTRAINTS ========================
 def apply_channel_constraints_universal(
     fused: np.ndarray,
@@ -122,7 +142,7 @@ def apply_channel_constraints_universal(
     tol_frac: float = 0.010,
     alpha_missing: float = 0.90,
     alpha_bins: float = 0.50,
-    alpha_prop: float = 0.35
+    alpha_prop: float = 0.35,
 ) -> np.ndarray:
     X3 = X.reshape(-1, 3, bins)
     q3 = q.reshape(3, bins)
@@ -152,6 +172,7 @@ def apply_channel_constraints_universal(
     penalty = penalty_missing + penalty_bins + penalty_prop
     return np.clip(fused - penalty, 0.0, 1.0)
 
+
 # ======================== CORE SEARCH ========================
 def search_color_voting(
     db_path: str,
@@ -164,7 +185,9 @@ def search_color_voting(
     if weight_map is None:
         weight_map = PRESET_WEIGHTS["balanced"]
     if not isinstance(weight_map, dict):
-        raise TypeError(f"'weight_map' muss dict sein, bekommen: {type(weight_map).__name__}")
+        raise TypeError(
+            f"'weight_map' muss dict sein, bekommen: {type(weight_map).__name__}"
+        )
 
     ids: List[int] = []
     paths: List[str] = []
@@ -239,23 +262,33 @@ def search_color_voting(
 
     out: List[Dict[str, Any]] = []
     for i in idx:
-        per_metric = {m: float(to_similarity(m, D[m][i:i+1])[0]) for m in metrics}
-        out.append({
-            "table": tabs[i],
-            "id": int(ids[i]),
-            "path": None if paths[i] is None else str(paths[i]),
-            "fused_similarity": float(fused[i]),
-            "per_metric": per_metric,
-        })
+        per_metric = {m: float(to_similarity(m, D[m][i : i + 1])[0]) for m in metrics}
+        out.append(
+            {
+                "table": tabs[i],
+                "id": int(ids[i]),
+                "path": None if paths[i] is None else str(paths[i]),
+                "fused_similarity": float(fused[i]),
+                "per_metric": per_metric,
+            }
+        )
     return out
+
 
 # ======================== CLI ========================
 def parse_args():
-    p = argparse.ArgumentParser(description="Color-Histogramm Suche mit universellen Kanal-Constraints.")
+    p = argparse.ArgumentParser(
+        description="Color-Histogramm Suche mit universellen Kanal-Constraints."
+    )
     p.add_argument("--db", dest="db_path", required=True, help="Pfad zur SQLite-DB")
-    p.add_argument("--QUERY_IMG", dest="query_img", required=True, help="Pfad zum Query-Bild")
-    p.add_argument("--top_k", dest="top_k", type=int, default=10, help="Anzahl der Top-Ergebnisse")
+    p.add_argument(
+        "--QUERY_IMG", dest="query_img", required=True, help="Pfad zum Query-Bild"
+    )
+    p.add_argument(
+        "--top_k", dest="top_k", type=int, default=10, help="Anzahl der Top-Ergebnisse"
+    )
     return p.parse_args()
+
 
 if __name__ == "__main__":
     args = parse_args()
@@ -293,10 +326,11 @@ if __name__ == "__main__":
         print("Keine Ergebnisse gefunden (prüfe Tabellen/Spalten).")
     else:
         for i, r in enumerate(results, 1):
-            print(f"[{i:02d}] sim={r['fused_similarity']:.4f}  "
-                  f"path={r['path']}  (table={r['table']}, id={r['id']})")
+            print(
+                f"[{i:02d}] sim={r['fused_similarity']:.4f}  "
+                f"path={r['path']}  (table={r['table']}, id={r['id']})"
+            )
             print(f"     per_metric: {r['per_metric']}")
 
 
-
-#python src/similarity/color.py --db "C:\BIG_DATA\data\database.db" --QUERY_IMG "Z:\CODING\UNI\BIG_DATA\data\TEST_IMAGES\kontrastierendes-outdoor-texturdesign.jpg" --top_k 5
+# python src/similarity/color.py --db "C:\BIG_DATA\data\database.db" --QUERY_IMG "Z:\CODING\UNI\BIG_DATA\data\TEST_IMAGES\kontrastierendes-outdoor-texturdesign.jpg" --top_k 5
