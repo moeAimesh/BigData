@@ -1,0 +1,48 @@
+         552854 function calls (523218 primitive calls) in 2.741 seconds
+
+   Ordered by: cumulative time
+   List reduced from 405 to 40 due to restriction <40>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        2    0.000    0.000    2.743    1.371 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\IPython\core\interactiveshell.py:3663(run_code)
+        2    0.000    0.000    2.743    1.371 {built-in method builtins.exec}
+        1    0.067    0.067    2.741    2.741 z:\CODING\UNI\BIG_DATA\src\engine\core.py:58(search_once)
+        1    0.006    0.006    2.674    2.674 Z:\CODING\UNI\BIG_DATA\src\similarity\mix.py:432(search_image)
+     3840    0.035    0.000    1.415    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\_npyio_impl.py:308(load)
+        1    0.076    0.076    1.333    1.333 Z:\CODING\UNI\BIG_DATA\src\similarity\mix.py:317(rerank_mid_64)
+     3840    0.031    0.000    1.030    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\format.py:864(open_memmap)
+        1    0.000    0.000    0.717    0.717 Z:\CODING\UNI\BIG_DATA\src\similarity\mix.py:248(build_index_if_needed)
+        1    0.000    0.000    0.676    0.676 Z:\CODING\UNI\BIG_DATA\src\similarity\mix.py:156(load)
+    11522    0.507    0.000    0.507    0.000 {built-in method io.open}
+        1    0.502    0.502    0.502    0.502 {built-in method hnswlib.load_index}
+     3840    0.119    0.000    0.354    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\_core\memmap.py:214(__new__)
+     3840    0.034    0.000    0.346    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\format.py:604(_read_array_header)
+  1215/21    0.002    0.000    0.334    0.016 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\torch\nn\modules\module.py:1747(_wrapped_call_impl)
+  1215/21    0.003    0.000    0.334    0.016 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\torch\nn\modules\module.py:1755(_call_impl)
+       20    0.004    0.000    0.322    0.016 Z:\CODING\UNI\BIG_DATA\src\similarity\mix.py:383(_lpips_dist)
+       20    0.004    0.000    0.316    0.016 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\lpips\lpips.py:112(forward)
+     3840    0.012    0.000    0.275    0.000 Z:\Python311\Lib\ast.py:54(literal_eval)
+  308/301    0.001    0.000    0.273    0.001 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\torch\nn\modules\container.py:238(forward)
+       40    0.001    0.000    0.243    0.006 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\lpips\pretrained_networks.py:80(forward)
+        1    0.014    0.014    0.236    0.236 Z:\CODING\UNI\BIG_DATA\src\similarity\mix.py:338(rerank_fine_512)
+      320    0.001    0.000    0.235    0.001 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\torch\nn\modules\conv.py:553(forward)
+      320    0.001    0.000    0.233    0.001 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\torch\nn\modules\conv.py:536(_conv_forward)
+      320    0.233    0.001    0.233    0.001 {built-in method torch.conv2d}
+30720/3840    0.175    0.000    0.183    0.000 Z:\Python311\Lib\ast.py:84(_convert)
+        1    0.168    0.168    0.174    0.174 {built-in method _pickle.load}
+    15401    0.137    0.000    0.137    0.000 {method 'read' of '_io.BufferedReader' objects}
+     3840    0.004    0.000    0.078    0.000 Z:\Python311\Lib\ast.py:33(parse)
+     3842    0.073    0.000    0.073    0.000 {built-in method builtins.compile}
+    11520    0.021    0.000    0.071    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\format.py:971(_read_bytes)
+     7682    0.071    0.000    0.071    0.000 {method '__exit__' of '_io._IOBase' objects}
+     3840    0.007    0.000    0.063    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\format.py:225(read_magic)
+     3840    0.049    0.000    0.052    0.000 Z:\Python311\Lib\contextlib.py:558(__exit__)
+       15    0.041    0.003    0.041    0.003 {method 'execute' of 'sqlite3.Cursor' objects}
+        1    0.000    0.000    0.040    0.040 {built-in method builtins.sum}
+        8    0.000    0.000    0.040    0.005 Z:\CODING\UNI\BIG_DATA\src\similarity\mix.py:256(<genexpr>)
+        7    0.000    0.000    0.040    0.006 Z:\CODING\UNI\BIG_DATA\src\similarity\mix.py:180(count_rows)
+     4016    0.019    0.000    0.029    0.000 {method 'astype' of 'numpy.ndarray' objects}
+    15360    0.024    0.000    0.028    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\_core\memmap.py:310(__array_finalize__)
+       81    0.000    0.000    0.027    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\torch\nn\modules\pooling.py:212(forward)
+
+

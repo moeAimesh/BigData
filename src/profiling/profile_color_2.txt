@@ -1,0 +1,48 @@
+         743236 function calls (743138 primitive calls) in 1.871 seconds
+
+   Ordered by: cumulative time
+   List reduced from 168 to 40 due to restriction <40>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        2    0.000    0.000    1.871    0.936 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\IPython\core\interactiveshell.py:3663(run_code)
+        2    0.000    0.000    1.871    0.936 {built-in method builtins.exec}
+        1    0.001    0.001    1.871    1.871 C:\Users\moham\AppData\Local\Temp\ipykernel_15248\4203987092.py:1(<module>)
+        1    0.198    0.198    1.871    1.871 z:\CODING\UNI\BIG_DATA\src\engine\core.py:294(search_once)
+        1    0.912    0.912    1.646    1.646 z:\CODING\UNI\BIG_DATA\src\engine\core.py:244(_search_color_cached_core)
+        1    0.123    0.123    0.184    0.184 {method 'sort' of 'list' objects}
+        7    0.061    0.009    0.165    0.024 z:\CODING\UNI\BIG_DATA\src\engine\core.py:101(_emd1d_sim)
+        7    0.152    0.022    0.164    0.023 z:\CODING\UNI\BIG_DATA\src\engine\core.py:94(_chi2_sim)
+        7    0.092    0.013    0.092    0.013 z:\CODING\UNI\BIG_DATA\src\engine\core.py:89(_hellinger_sim)
+       14    0.092    0.007    0.092    0.007 {method 'cumsum' of 'numpy.ndarray' objects}
+   359754    0.061    0.000    0.061    0.000 z:\CODING\UNI\BIG_DATA\src\engine\core.py:288(<lambda>)
+        7    0.000    0.000    0.044    0.006 z:\CODING\UNI\BIG_DATA\src\engine\core.py:164(_load_cached_table)
+        7    0.029    0.004    0.041    0.006 z:\CODING\UNI\BIG_DATA\src\engine\core.py:98(_intersect_sim)
+       14    0.000    0.000    0.037    0.003 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\_npyio_impl.py:308(load)
+       14    0.000    0.000    0.036    0.003 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\format.py:762(read_array)
+       24    0.000    0.000    0.035    0.001 {method 'sum' of 'numpy.ndarray' objects}
+       38    0.035    0.001    0.035    0.001 {method 'reduce' of 'numpy.ufunc' objects}
+       24    0.000    0.000    0.035    0.001 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\_core\_methods.py:50(_sum)
+        7    0.034    0.005    0.034    0.005 {built-in method _pickle.load}
+   359819    0.033    0.000    0.033    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.017    0.017 z:\CODING\UNI\BIG_DATA\src\engine\core.py:63(_read_image_bgr)
+        1    0.017    0.017    0.017    0.017 {imdecode}
+     2050    0.004    0.000    0.010    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\ipykernel\ipkernel.py:781(_clean_thread_parent_frames)
+        1    0.000    0.000    0.010    0.010 Z:\CODING\UNI\BIG_DATA\src\features\color_vec.py:23(calc_histogram)
+        3    0.010    0.003    0.010    0.003 {calcHist}
+     1025    0.002    0.000    0.004    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\ipykernel\ipkernel.py:796(<setcomp>)
+        7    0.000    0.000    0.003    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\_core\memmap.py:214(__new__)
+       42    0.000    0.000    0.002    0.000 Z:\Python311\Lib\pathlib.py:1008(stat)
+       42    0.002    0.000    0.002    0.000 {built-in method nt.stat}
+     1025    0.002    0.000    0.002    0.000 Z:\Python311\Lib\threading.py:1501(enumerate)
+       35    0.000    0.000    0.002    0.000 Z:\Python311\Lib\pathlib.py:1230(exists)
+        7    0.000    0.000    0.002    0.000 Z:\Python311\Lib\pathlib.py:981(resolve)
+       28    0.001    0.000    0.001    0.000 {built-in method io.open}
+     7175    0.001    0.000    0.001    0.000 Z:\Python311\Lib\threading.py:1168(ident)
+        7    0.000    0.000    0.001    0.000 <frozen ntpath>:674(realpath)
+        8    0.001    0.000    0.001    0.000 {built-in method numpy.fromfile}
+       14    0.001    0.000    0.001    0.000 {built-in method nt._getfinalpathname}
+        7    0.000    0.000    0.001    0.000 Z:\Python311\Lib\pathlib.py:1053(read_text)
+       14    0.000    0.000    0.001    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\format.py:604(_read_array_header)
+        1    0.000    0.000    0.001    0.001 z:\CODING\UNI\BIG_DATA\src\engine\core.py:237(_color_tables)
+
+

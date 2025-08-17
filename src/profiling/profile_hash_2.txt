@@ -1,0 +1,48 @@
+         14015479 function calls in 6.779 seconds
+
+   Ordered by: cumulative time
+   List reduced from 218 to 40 due to restriction <40>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        2    0.000    0.000    6.779    3.390 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\IPython\core\interactiveshell.py:3663(run_code)
+        2    0.000    0.000    6.779    3.390 {built-in method builtins.exec}
+        1    0.000    0.000    6.779    6.779 C:\Users\moham\AppData\Local\Temp\ipykernel_9476\4203987092.py:1(<module>)
+        1    0.014    0.014    6.779    6.779 z:\CODING\UNI\BIG_DATA\src\engine\core.py:58(search_once)
+        1    0.768    0.768    6.732    6.732 Z:\CODING\UNI\BIG_DATA\src\similarity\hash.py:93(search_by_hash_voting_multitables)
+  1079262    2.987    0.000    4.765    0.000 Z:\CODING\UNI\BIG_DATA\src\similarity\hash.py:10(_parse_hash_value)
+  1079269    0.438    0.000    0.869    0.000 {built-in method builtins.any}
+       14    0.817    0.058    0.824    0.059 {method 'fetchall' of 'sqlite3.Cursor' objects}
+  3569857    0.546    0.000    0.546    0.000 Z:\CODING\UNI\BIG_DATA\src\similarity\hash.py:20(<genexpr>)
+  3238825    0.380    0.000    0.380    0.000 {built-in method builtins.isinstance}
+  1798822    0.175    0.000    0.175    0.000 {method 'append' of 'list' objects}
+  1079262    0.172    0.000    0.172    0.000 {method 'startswith' of 'str' objects}
+  1079264    0.127    0.000    0.127    0.000 {method 'lower' of 'str' objects}
+  1079262    0.115    0.000    0.115    0.000 {method 'strip' of 'str' objects}
+       38    0.114    0.003    0.114    0.003 {built-in method numpy.array}
+        3    0.020    0.007    0.077    0.026 Z:\CODING\UNI\BIG_DATA\src\similarity\hash.py:35(_hamming_uint64_vec)
+       21    0.057    0.003    0.057    0.003 {method 'reduce' of 'numpy.ufunc' objects}
+        4    0.000    0.000    0.057    0.014 {method 'sum' of 'numpy.ndarray' objects}
+        4    0.000    0.000    0.057    0.014 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\_core\_methods.py:50(_sum)
+        1    0.001    0.001    0.033    0.033 Z:\CODING\UNI\BIG_DATA\src\similarity\hash.py:207(compute_query_hashes)
+        4    0.000    0.000    0.023    0.006 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\PIL\Image.py:931(convert)
+        2    0.000    0.000    0.011    0.006 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\PIL\ImageFile.py:273(load)
+        3    0.010    0.003    0.010    0.003 {method 'convert' of 'ImagingCore' objects}
+      135    0.009    0.000    0.009    0.000 {method 'decode' of 'ImagingDecoder' objects}
+      986    0.003    0.000    0.007    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\ipykernel\ipkernel.py:781(_clean_thread_parent_frames)
+        3    0.000    0.000    0.007    0.002 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\PIL\Image.py:2215(resize)
+        3    0.007    0.002    0.007    0.002 {method 'resize' of 'ImagingCore' objects}
+        1    0.000    0.000    0.007    0.007 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\imagehash\__init__.py:261(phash)
+        1    0.000    0.000    0.006    0.006 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\imagehash\__init__.py:233(average_hash)
+        1    0.000    0.000    0.006    0.006 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\imagehash\__init__.py:304(dhash)
+        3    0.000    0.000    0.003    0.001 Z:\CODING\UNI\BIG_DATA\src\similarity\hash.py:41(_topk_indices)
+        7    0.000    0.000    0.003    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\_core\fromnumeric.py:51(_wrapfunc)
+        3    0.000    0.000    0.003    0.001 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\_core\fromnumeric.py:876(argpartition)
+        3    0.003    0.001    0.003    0.001 {method 'argpartition' of 'numpy.ndarray' objects}
+        7    0.003    0.000    0.003    0.000 {method 'extend' of 'list' objects}
+      493    0.001    0.000    0.002    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\ipykernel\ipkernel.py:796(<setcomp>)
+      493    0.002    0.000    0.002    0.000 Z:\Python311\Lib\threading.py:1501(enumerate)
+        1    0.000    0.000    0.002    0.002 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\PIL\Image.py:1267(copy)
+        1    0.002    0.002    0.002    0.002 {method 'copy' of 'ImagingCore' objects}
+       14    0.002    0.000    0.002    0.000 {method 'execute' of 'sqlite3.Cursor' objects}
+
+

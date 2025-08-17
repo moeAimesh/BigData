@@ -1,0 +1,48 @@
+         547040 function calls (520004 primitive calls) in 2.292 seconds
+
+   Ordered by: cumulative time
+   List reduced from 394 to 40 due to restriction <40>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        2    0.000    0.000    2.294    1.147 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\IPython\core\interactiveshell.py:3663(run_code)
+        2    0.000    0.000    2.294    1.147 {built-in method builtins.exec}
+        1    0.055    0.055    2.292    2.292 z:\CODING\UNI\BIG_DATA\src\engine\core.py:58(search_once)
+        1    0.006    0.006    2.237    2.237 Z:\CODING\UNI\BIG_DATA\src\similarity\embedding.py:406(search_image)
+     3840    0.036    0.000    1.297    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\_npyio_impl.py:308(load)
+        1    0.077    0.077    1.206    1.206 Z:\CODING\UNI\BIG_DATA\src\similarity\embedding.py:280(rerank_mid_64)
+     3840    0.032    0.000    0.907    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\format.py:864(open_memmap)
+        1    0.000    0.000    0.681    0.681 Z:\CODING\UNI\BIG_DATA\src\similarity\embedding.py:223(build_index_if_needed)
+        1    0.000    0.000    0.639    0.639 Z:\CODING\UNI\BIG_DATA\src\similarity\embedding.py:161(load)
+    11522    0.514    0.000    0.514    0.000 {built-in method io.open}
+        1    0.487    0.487    0.487    0.487 {built-in method hnswlib.load_index}
+     3840    0.122    0.000    0.361    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\_core\memmap.py:214(__new__)
+        1    0.014    0.014    0.247    0.247 Z:\CODING\UNI\BIG_DATA\src\similarity\embedding.py:301(rerank_fine_512)
+     3840    0.034    0.000    0.210    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\format.py:604(_read_array_header)
+        1    0.146    0.146    0.151    0.151 {built-in method _pickle.load}
+    15401    0.139    0.000    0.139    0.000 {method 'read' of '_io.BufferedReader' objects}
+     3840    0.012    0.000    0.139    0.000 Z:\Python311\Lib\ast.py:54(literal_eval)
+     3840    0.004    0.000    0.079    0.000 Z:\Python311\Lib\ast.py:33(parse)
+     3842    0.074    0.000    0.074    0.000 {built-in method builtins.compile}
+    11520    0.021    0.000    0.073    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\format.py:971(_read_bytes)
+     7682    0.073    0.000    0.073    0.000 {method '__exit__' of '_io._IOBase' objects}
+     3840    0.007    0.000    0.065    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\lib\format.py:225(read_magic)
+     3840    0.050    0.000    0.053    0.000 Z:\Python311\Lib\contextlib.py:558(__exit__)
+       56    0.046    0.001    0.046    0.001 {method 'execute' of 'sqlite3.Cursor' objects}
+30720/3840    0.037    0.000    0.046    0.000 Z:\Python311\Lib\ast.py:84(_convert)
+        4    0.005    0.001    0.043    0.011 Z:\CODING\UNI\BIG_DATA\src\similarity\embedding.py:509(attach_umap_to_items)
+        1    0.000    0.000    0.041    0.041 {built-in method builtins.sum}
+        8    0.000    0.000    0.041    0.005 Z:\CODING\UNI\BIG_DATA\src\similarity\embedding.py:231(<genexpr>)
+        7    0.000    0.000    0.041    0.006 Z:\CODING\UNI\BIG_DATA\src\similarity\embedding.py:186(count_rows)
+       24    0.002    0.000    0.033    0.001 Z:\CODING\UNI\BIG_DATA\src\similarity\embedding.py:209(fetch_umap_coords)
+     3851    0.019    0.000    0.029    0.000 {method 'astype' of 'numpy.ndarray' objects}
+    15360    0.023    0.000    0.028    0.000 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\numpy\_core\memmap.py:310(__array_finalize__)
+       49    0.027    0.001    0.027    0.001 {method 'fetchall' of 'sqlite3.Cursor' objects}
+        1    0.000    0.000    0.021    0.021 Z:\CODING\UNI\BIG_DATA\src\similarity\embedding_vec.py:45(extract_embeddings)
+     75/1    0.000    0.000    0.020    0.020 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\torch\nn\modules\module.py:1747(_wrapped_call_impl)
+     75/1    0.000    0.000    0.020    0.020 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\torch\nn\modules\module.py:1755(_call_impl)
+      8/1    0.000    0.000    0.020    0.020 z:\CODING\UNI\BIG_DATA\venv\Lib\site-packages\torch\nn\modules\container.py:238(forward)
+   101390    0.015    0.000    0.019    0.000 {built-in method builtins.isinstance}
+     3848    0.012    0.000    0.017    0.000 {built-in method __new__ of type object at 0x00007FFC2C2B0FD0}
+     3840    0.007    0.000    0.017    0.000 Z:\Python311\Lib\contextlib.py:502(enter_context)
+
+

@@ -1,75 +1,49 @@
-# color_search_variantA_nargs.py
+# color_search_variantA_args.py
 # -*- coding: utf-8 -*-
-"""
-Variante A (ohne Args):
-- Query-Histogramm wird als [B|G|R] berechnet (OpenCV/BGR).
-- Danach R↔B getauscht -> [R|G|B], um eine DB zu matchen, die effektiv RGB gespeichert hat.
-- Universelle Kanal-Constraints verhindern "zusätzliche" Farben (egal welcher Kanal ~0 ist).
-- Keine Änderungen an der DB nötig.
 
-CONFIG unten anpassen und Skript direkt starten.
-"""
-
+import argparse
 import sqlite3
 from typing import List, Dict, Any, Sequence, Optional
 
 import cv2
 import numpy as np
 
-# ======================== CONFIG ========================
-DB_PATH    = r"C:\BIG_DATA\data\database.db"
-IMAGE_PATH = r"Z:\CODING\UNI\BIG_DATA\data\TEST_IMAGES\OIP (1).webp"
-HIST_COL   = "color_hist"
-TOPK       = 10
+# ======================== FIXED CONFIG ========================
+HIST_COL      = "color_hist"
+TABLE_PREFIX  = "image_features_part_"
+BINS          = 32
+DIM           = 3 * BINS
+DO_SWAP_RB    = True  # Query [B|G|R] -> [R|G|B] zum DB-Match
 
-# Falls du zum Gegencheck OHNE Swap testen willst -> False
-DO_SWAP_RB = True
-
-TABLE_PREFIX = "image_features_part_"   # Tabellenpräfix
-BINS = 32
-DIM  = 3 * BINS
-
-# Welche Metriken werden genutzt (Reihenfolge bleibt beim Reporting)
-# Tipp: Für strenge 2-Farben-Queries Intersection rausnehmen.
 DEFAULT_METRICS = ("chi2", "hellinger", "intersect", "emd")
 
-# Presets für feste Gewichte (falls du Auto-Weights nicht willst)
 PRESET_WEIGHTS = {
     "balanced":   {"chi2": 1.8, "hellinger": 1.0, "intersect": 0.2, "emd": 1.3},
     "two_color":  {"chi2": 2.2, "hellinger": 0.8, "intersect": 0.0, "emd": 1.5},
     "flat_logo":  {"chi2": 1.0, "hellinger": 0.8, "intersect": 1.2, "emd": 0.5},
 }
-USE_PRESET: Optional[str] = None   # z.B. "balanced" setzen, um Auto-Weights zu überschreiben
+USE_PRESET: Optional[str] = None  # None => Auto-Weights
 
 # ======================== AUTO-WEIGHTS ========================
 def auto_weights(q: np.ndarray, bins: int = 32) -> Dict[str, float]:
-    """
-    Leichtes Auto-Tuning anhand der Query-Verteilung.
-    """
     ch = q.reshape(3, bins).sum(axis=1)  # (B,G,R)
     p  = q[q > 0]
-    H  = -(p * np.log(p)).sum() / np.log(q.size)  # normierte Entropie ∈[0,1]
+    H  = -(p * np.log(p)).sum() / np.log(q.size) if p.size else 0.0
 
-    # Default: Balanced
     w = {"chi2": 1.8, "hellinger": 1.0, "intersect": 0.2, "emd": 1.3}
-
-    # Einfarbig (niedrige Entropie) -> Intersection etwas stärker, EMD etwas runter
-    if H < 0.55:
+    if H < 0.55:  # einfarbig/geringe Entropie
         w.update({"intersect": 1.0, "emd": 0.7})
-
-    # Zwei dominante Kanäle -> χ² + EMD hoch, Intersection aus
-    if (ch > ch.sum() * 0.40).sum() == 2:
+    if (ch > ch.sum() * 0.40).sum() == 2:  # zwei dominante Kanäle
         w.update({"chi2": 2.2, "emd": 1.6, "intersect": 0.0})
-
     return w
 
 # ======================== UTILS ========================
 def to_uint8(img: np.ndarray) -> np.ndarray:
     if img is None:
         raise ValueError("img is None")
-    if img.ndim == 2:  # Grau -> BGR
+    if img.ndim == 2:
         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-    if img.ndim == 3 and img.shape[2] == 4:  # RGBA -> BGR
+    if img.ndim == 3 and img.shape[2] == 4:
         img = img[..., :3]
     if img.dtype == np.uint8:
         return img
@@ -79,13 +53,9 @@ def to_uint8(img: np.ndarray) -> np.ndarray:
     return np.clip(im, 0, 255).astype(np.uint8)
 
 def calc_histogram(img_bgr: np.ndarray, bins: int = BINS) -> np.ndarray:
-    """
-    Erwartet BGR (OpenCV).
-    Liefert L1-normalisiertes Histogramm [B | G | R] (Länge 3*bins).
-    """
     img_u8 = to_uint8(img_bgr)
     hists = []
-    for ch in (0, 1, 2):  # B, G, R
+    for ch in (0, 1, 2):  # B,G,R
         h = cv2.calcHist([img_u8], [ch], None, [bins], [0, 256]).ravel().astype(np.float32)
         hists.append(h)
     hist = np.concatenate(hists)
@@ -95,18 +65,12 @@ def calc_histogram(img_bgr: np.ndarray, bins: int = BINS) -> np.ndarray:
     return hist
 
 def swap_rb_hist(v: np.ndarray, bins: int = BINS) -> np.ndarray:
-    """
-    [B|G|R] -> [R|G|B]
-    """
     b, g, r = v[:bins], v[bins:2 * bins], v[2 * bins:]
     out = np.concatenate([r, g, b])
     out /= (out.sum() + 1e-12)
     return out
 
 def parse_hist_text(s: str) -> np.ndarray:
-    """
-    CSV-Text (float32) -> L1-normalisiertes Array (DIM,).
-    """
     v = np.fromstring(s, dtype=np.float32, sep=",")
     if v.size != DIM:
         raise ValueError(f"Expected {DIM}, got {v.size}")
@@ -124,18 +88,14 @@ def chi2_distance(X: np.ndarray, q: np.ndarray, eps: float = 1e-12) -> np.ndarra
 
 def hist_intersection_distance(X: np.ndarray, q: np.ndarray) -> np.ndarray:
     sim = np.minimum(X, q).sum(axis=1)
-    return 1.0 - sim  # ∈[0,1]
+    return 1.0 - sim
 
 def hellinger_distance(X: np.ndarray, q: np.ndarray) -> np.ndarray:
     sqX = np.sqrt(X)
     sqq = np.sqrt(q)
-    return np.linalg.norm(sqX - sqq, axis=1) / np.sqrt(2.0)  # ∈[0,1]
+    return np.linalg.norm(sqX - sqq, axis=1) / np.sqrt(2.0)
 
 def emd1d_per_channel_distance(X: np.ndarray, q: np.ndarray, bins: int = BINS) -> np.ndarray:
-    """
-    1D-EMD je Kanal über kumulative Summen, dann Mittel über 3 Kanäle.
-    Normalisierung durch (bins-1), damit ∈[0,1].
-    """
     Xr = X.reshape(-1, 3, bins)
     qr = q.reshape(3, bins)
     cX = np.cumsum(Xr, axis=2)
@@ -159,43 +119,33 @@ def apply_channel_constraints_universal(
     X: np.ndarray,
     q: np.ndarray,
     bins: int,
-    tol_frac: float = 0.010,   # ~1% Toleranz pro Kanal
-    alpha_missing: float = 0.90,  # Strafe für "extra" Masse in quasi-leeren Query-Kanälen
-    alpha_bins: float = 0.50,     # Strafe pro Bin in verbotenen Bereichen
-    alpha_prop: float = 0.35      # Strafe für falsches Verhältnis der aktiven Kanäle
+    tol_frac: float = 0.010,
+    alpha_missing: float = 0.90,
+    alpha_bins: float = 0.50,
+    alpha_prop: float = 0.35
 ) -> np.ndarray:
-    """
-    Universelle Kanal-Constraints:
-      - funktioniert für beliebige Query-Kombis (1-, 2- oder 3-Kanal),
-      - kein Sonderfall "grün"; alle Kanäle werden symmetrisch behandelt.
-    """
-    X3 = X.reshape(-1, 3, bins)    # (N,3,B)
-    q3 = q.reshape(3, bins)        # (3,B)
+    X3 = X.reshape(-1, 3, bins)
+    q3 = q.reshape(3, bins)
 
-    # Kanal-Summen
-    q_ch = q3.sum(axis=1)          # (3,)
-    X_ch = X3.sum(axis=2)          # (N,3)
+    q_ch = q3.sum(axis=1)
+    X_ch = X3.sum(axis=2)
 
-    # (A) Query-Kanal ~0? -> "extra" Masse bestrafen
     tol_ch = tol_frac
-    missing_mask = (q_ch < tol_ch).astype(np.float32)                         # (3,)
-    extra_mass = np.maximum(X_ch - (q_ch + tol_ch), 0.0) * missing_mask       # (N,3)
-    penalty_missing = alpha_missing * extra_mass.sum(axis=1)                  # (N,)
+    missing_mask = (q_ch < tol_ch).astype(np.float32)
+    extra_mass = np.maximum(X_ch - (q_ch + tol_ch), 0.0) * missing_mask
+    penalty_missing = alpha_missing * extra_mass.sum(axis=1)
 
-    # (B) Bin-Level: Masse in Bins, die Query fast 0 hat, runterziehen
     tol_bin = tol_ch / max(bins, 1)
-    forbid_bins = (q3 < tol_bin).astype(np.float32)                           # (3,B)
-    penalty_bins = alpha_bins * (X3 * forbid_bins).sum(axis=(1, 2))           # (N,)
+    forbid_bins = (q3 < tol_bin).astype(np.float32)
+    penalty_bins = alpha_bins * (X3 * forbid_bins).sum(axis=(1, 2))
 
-    # (C) Verhältnis der "aktiven" Kanäle (die nicht quasi 0 sind)
-    active_idx = np.where(q_ch >= tol_ch)[0]                                  # z.B. [0,2] bei B+R
+    active_idx = np.where(q_ch >= tol_ch)[0]
     if active_idx.size >= 2:
-        cq = q_ch[active_idx] / (q_ch[active_idx].sum() + 1e-12)              # (K,)
+        cq = q_ch[active_idx] / (q_ch[active_idx].sum() + 1e-12)
         cx = X_ch[:, active_idx]
-        cx = (cx.T / (cx.sum(axis=1) + 1e-12)).T                              # (N,K)
-        # L1-Abstand der Kanalverhältnisse (sanft, skaliert in [0,2])
-        prop_l1 = np.abs(cx - cq).sum(axis=1)                                 # (N,)
-        penalty_prop = alpha_prop * 0.5 * prop_l1                             # ~[0,1]
+        cx = (cx.T / (cx.sum(axis=1) + 1e-12)).T
+        prop_l1 = np.abs(cx - cq).sum(axis=1)
+        penalty_prop = alpha_prop * 0.5 * prop_l1
     else:
         penalty_prop = np.zeros((X.shape[0],), dtype=np.float32)
 
@@ -209,7 +159,7 @@ def search_color_voting(
     hist_col: str = HIST_COL,
     metrics: Sequence[str] = DEFAULT_METRICS,
     weight_map: Optional[Dict[str, float]] = None,
-    topk: int = TOPK,
+    topk: int = 10,
 ) -> List[Dict[str, Any]]:
     if weight_map is None:
         weight_map = PRESET_WEIGHTS["balanced"]
@@ -223,7 +173,6 @@ def search_color_voting(
 
     con = sqlite3.connect(db_path)
     cur = con.cursor()
-
     tables = list_feature_tables(con, TABLE_PREFIX)
 
     for t in tables:
@@ -259,7 +208,7 @@ def search_color_voting(
         return []
 
     X = np.vstack(feats).astype(np.float32)
-    X = (X.T / (X.sum(axis=1) + 1e-12)).T  # L1-Sicherheitsnormierung
+    X = (X.T / (X.sum(axis=1) + 1e-12)).T
 
     q = q_hist.astype(np.float32)
     q = q / (q.sum() + 1e-12)
@@ -282,7 +231,6 @@ def search_color_voting(
     wsum = sum(weight_map.get(m, 1.0) for m in metrics)
     fused = np.sum(S, axis=0) / (wsum + 1e-12)
 
-    # >>> Universelle Kanal-Constraints <<<
     fused = apply_channel_constraints_universal(fused, X, q, bins=BINS)
 
     k = min(topk, fused.size)
@@ -301,34 +249,43 @@ def search_color_voting(
         })
     return out
 
-# ======================== RUN ========================
+# ======================== CLI ========================
+def parse_args():
+    p = argparse.ArgumentParser(description="Color-Histogramm Suche mit universellen Kanal-Constraints.")
+    p.add_argument("--db", dest="db_path", required=True, help="Pfad zur SQLite-DB")
+    p.add_argument("--QUERY_IMG", dest="query_img", required=True, help="Pfad zum Query-Bild")
+    p.add_argument("--top_k", dest="top_k", type=int, default=10, help="Anzahl der Top-Ergebnisse")
+    return p.parse_args()
+
 if __name__ == "__main__":
-    # 1) Bild laden (BGR)
-    img = cv2.imread(IMAGE_PATH, cv2.IMREAD_COLOR)
+    args = parse_args()
+
+    # 1) Bild laden
+    img = cv2.imread(args.query_img, cv2.IMREAD_COLOR)
     if img is None:
-        raise FileNotFoundError(f"Konnte Bild nicht laden: {IMAGE_PATH}")
+        raise FileNotFoundError(f"Konnte Bild nicht laden: {args.query_img}")
 
     # 2) Query-Hist [B|G|R]
     q_bgr = calc_histogram(img, bins=BINS)
 
-    # 3) Variante A: Query -> [R|G|B] (R↔B tauschen), um DB zu matchen
+    # 3) Optionaler Swap B<->R zum DB-Match (ergibt [R|G|B])
     q_db = swap_rb_hist(q_bgr, BINS) if DO_SWAP_RB else q_bgr
 
-    # 4) Gewichte bestimmen
+    # 4) Gewichte
     if USE_PRESET in PRESET_WEIGHTS:
         WEIGHTS = PRESET_WEIGHTS[USE_PRESET]
     else:
-        WEIGHTS = auto_weights(q_db, BINS)  # Auto-Tuning anhand der Query
+        WEIGHTS = auto_weights(q_db, BINS)
     print("Weights:", WEIGHTS)
 
     # 5) Suche
     results = search_color_voting(
-        db_path=DB_PATH,
+        db_path=args.db_path,
         q_hist=q_db,
         hist_col=HIST_COL,
         metrics=DEFAULT_METRICS,
-        weight_map=WEIGHTS,   # <-- dict, nicht Funktion
-        topk=TOPK,
+        weight_map=WEIGHTS,
+        topk=args.top_k,
     )
 
     # 6) Ausgabe
@@ -339,3 +296,7 @@ if __name__ == "__main__":
             print(f"[{i:02d}] sim={r['fused_similarity']:.4f}  "
                   f"path={r['path']}  (table={r['table']}, id={r['id']})")
             print(f"     per_metric: {r['per_metric']}")
+
+
+
+#python src/similarity/color.py --db "C:\BIG_DATA\data\database.db" --QUERY_IMG "Z:\CODING\UNI\BIG_DATA\data\TEST_IMAGES\kontrastierendes-outdoor-texturdesign.jpg" --top_k 5

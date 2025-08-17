@@ -1,0 +1,397 @@
+Vergleichs-Metriken (für ResNet-Embeddings)
+
+Empfehlung (Default): Cosine Similarity
+
+Richtung der Vektoren zählt, nicht die Länge → robust gegen Helligkeit/Kontrast/Skalierung.
+
+In Praxis: erst L2-normalisieren, dann Inner Product (gleichwertig zu Cosine).
+
+Weitere sinnvolle Optionen:
+
+Euclidean (L2) – funktioniert gut, wenn du die Vektoren vorher zentrierst/normierst; bei hoher Dim. oft schlechter als Cosine.
+
+Angular distance – arccos(Cosine); identische Rangfolge wie Cosine, aber „winkelartige“ Skala.
+
+Manhattan (L1) – seltener bei d=512, kann robuster gg. Ausreißer sein; braucht Feature-Skalierung.
+
+Mahalanobis / learned metric – wenn du gelabelte „gleich/ungleich“-Paare hast (Triplet/ArcFace-Style); aufwendiger, aber kann SOTA-Qualität bringen (optional).
+
+Kurs-Takeaway: Für Vektoren in ℝⁿ sind Cosine/L2 die Standardwahl; erst in Vektoren bringen (Embeddings), dann mit Distanz/Similarity arbeiten.
+
+Schnelle Suche (exact vs. approximate)
+
+Der Projekt-Rahmen erwartet ANN (Approximate Nearest Neighbor) – oder sehr schnelle exakte Suche – und erlaubt die Kombination mehrerer Metriken.
+
+A) Exakt (wenn N ≤ ~500k & d≈512)
+
+Cosine exakt = Matrixprodukt:
+
+Staple alle Embeddings in eine Matrix X ∈ R^{N×d} (idealerweise ein einzelnes .npy/.npz; notfalls mmap mehrere .npy).
+
+Normiere X zeilenweise (L2).
+
+Normiere Query q und berechne scores = X @ q.
+
+argpartition für Top-k.
+
+Läuft superfix auf GPU (torch.matmul) oder BLAS am CPU.
+
+Vorteil: keine Recall-Verluste, simple Implementierung.
+
+Mini-Code (NumPy, Cosine exakt):
+
+# X: (N,d) float32, L2-normalized; q: (d,) float32, L2-normalized
+scores = X @ q                     # cosine
+topk = np.argpartition(scores, -k)[-k:]
+topk = topk[np.argsort(scores[topk])[::-1]]
+
+B) ANN (empfohlen ab ~0.5–1 Mio oder wenn’s „in Sekunden“ immer gehen soll)
+
+Graph-basiert:
+
+HNSW (FAISS IndexHNSWFlat oder hnswlib): sehr guter Recall, sehr schnell; Parameter M, efSearch steuern Speed/Qualität.
+Inverted File (VQ):
+
+IVF-Flat (coarse quantizer + listenweise Suche): gut, wenn du RAM/GPU sparen willst.
+
+IVF-PQ / OPQ-PQ: starke Kompression (x10–x16), top Speed bei großem N, etwas geringerer Recall.
+Moderne Alternativen: ScaNN (CPU), NMSLIB (SW-Graph).
+
+Projekt fordert explizit: „Use an approximate nearest neighbor search algorithm“. HNSW/IVF-(PQ) sind genau dafür gemacht.
+
+Pragmatischer Fahrplan:
+
+Bis ~500k: Exakt (Cosine via MatMul) reicht oft.
+
+0.5–5 Mio: HNSW (einfach, sehr gut).
+
+>5 Mio / enger RAM: IVF-PQ oder OPQ+IVF-PQ (FAISS).
+
+Deine Speicherung: .npy-Files pro Bild
+
+So holst du das Maximum raus:
+
+Einmal zusammenpacken:
+Lade alle .npy (gleiche Dim!), stacke zu X (N,d) und speichere eine Datei (.npy/.npz) + separate ID/Path-Mapping.
+– Vorteil: ein Map, ein mmap-Handle, extrem schneller sequentieller Zugriff.
+
+L2-Normalisierung offline: speichere gleich X_norm (float32).
+
+Index persistieren: FAISS-Index nach dem Build speichern & beim Start laden (kein Rebuild).
+
+Mini-Bausteine (robust & knapp)
+
+Cosine-Normalisierung:
+
+def l2norm_rows(X, eps=1e-12):
+    n = np.linalg.norm(X, axis=1, keepdims=True)
+    return X / np.maximum(n, eps)
+
+def l2norm_vec(q, eps=1e-12):
+    return q / max(np.linalg.norm(q), eps)
+
+
+FAISS HNSW (Cosine via IP):
+
+import faiss, numpy as np
+
+X = np.load("embeddings_512.npy").astype(np.float32)  # (N,512)
+X = l2norm_rows(X)                                    # Cosine
+index = faiss.IndexHNSWFlat(X.shape[1], 32)
+index.hnsw.efConstruction = 200
+index.hnsw.efSearch = 64
+index.add(X)
+faiss.write_index(index, "hnsw_cosine.idx")
+
+# Suche:
+index = faiss.read_index("hnsw_cosine.idx")
+q = l2norm_vec(np.load("query_512.npy").astype(np.float32))
+D, I = index.search(q[None,:], 10)  # Top-10
+
+
+Exakt auf GPU (PyTorch):
+
+import torch, numpy as np
+X = torch.tensor(np.load("X_norm.npy"), device="cuda")    # (N,d), L2-normed
+q = torch.tensor(np.load("q.npy"), device="cuda")
+q = q / (q.norm() + 1e-12)
+scores = X @ q
+topk = torch.topk(scores, k=10).indices.detach().cpu().numpy()
+
+Qualität & Praxis-Tipps
+
+Preprocessing-Fix: Deine OpenCV-Pipelines sind BGR; die ImageNet-Mean/Std sind RGB. Achte darauf, vor dem Normalisieren BGR→RGB zu konvertieren, sonst leiden die Embeddings. (Oder nimm weights.transforms() direkt.)
+
+Dim-Reduktion: Optional PCA→128/256D (auf Train-Set fitten, dann anwenden) – bringt Speed & oft minimalen Recall-Drop.
+
+Reranking: Candidate-Set (z. B. Top-200 via ANN) exakt nachrechnen und ggf. fusionieren (z. B. Cosine (emb) + Farbe/Hash-Score mit Gewichten). Das Kombinieren mehrerer Metriken ist im Projekt explizit erwünscht.
+
+Mehrere Queries: normalisierte Queries mitteln → robustere Suche (oder Reciprocal Rank Fusion).
+
+Kalibrierung: Für ResNet-18-GAP-Features liegen „sehr ähnliche“ Paare oft bei Cosine ≥ 0.8–0.9 (datensatzabhängig) – Schwellenwert empirisch festlegen.
+
+TL;DR (kurzer Entscheidungsbaum)
+
+Metrik: Cosine (L2-normieren) → Standard für Embeddings.
+
+Bis ~500k Bilder: Exakt per MatMul (CPU/GPU).
+
+Größer: HNSW (einfach & stark).
+
+Sehr groß/enger RAM: IVF-PQ/OPQ-PQ (FAISS).
+
+Qualität boosten: BGR→RGB fixen, optional PCA, ANN→Rerank, Scores mit Farbe/Hash kombinieren.
+
+Wenn du magst, skizziere ich dir in 1–2 Snippets, wie du aus deinen DB-Pfaden die .npy stapelst, einen HNSW-Index baust und persistierst – ready to search in Sekunden.
+
+
+
+
+
+
+
+
+___________ PCA & UMAP ______________
+
+Exakt, potenziell langsamer → Original-Embeddings.
+Cosine (nach L2-Norm) + Matrixprodukt/IndexFlat = 100 % korrektes Top-k. Gut bis ~100–500k Vektoren (abhängig von HW).
+
+Schneller, nahezu gleich gut → PCA-reduzierte Embeddings + ANN.
+PCA auf z. B. 256 (oder 128) Dimensionen, danach wieder L2-normieren und mit HNSW oder IVF-(PQ) suchen. Meist minimaler Recall-Verlust, große Speed-/RAM-Gewinne.
+Für Visuals (UMAP/t-SNE): erst PCA (z. B. 50–256D), dann UMAP → stabiler & schneller.
+
+Mini-Merkzettel:
+
+Nur drehen (PCA ohne Reduktion) ⇒ Rankings identisch.
+
+Reduzieren (d→d′) ⇒ fast gleich, aber nicht exakt (Infoverlust).
+
+Praxis-Pfad:
+
+≤ 500k: Original d, exakt oder HNSW.
+
+0.5–5 M: PCA 256 + HNSW.
+
+5 M / wenig RAM: PCA 128–256 + IVF-PQ/OPQ-PQ.
+
+Immer: L2-normieren (Cosine via Inner Product).
+
+Für UMAP: Sample (z. B. 10–50k Punkte), vorher PCA.
+
+
+
+ja – es gibt ein paar saubere Hybrid-Patterns, mit denen du Original-Embeddings und PCA-Embeddings gleichzeitig nutzt und so Speed und Qualität bekommst:
+
+1) Cascade (Coarse→Fine) – Standard
+
+Index A (schnell): PCA-reduzierte, L2-normierte Vektoren → ANN (z. B. HNSW).
+
+Index B (präzise): Original-Embeddings L2-normiert → exakt (FlatIP) oder kleiner HNSW.
+
+Ablauf:
+
+Suche Top-M Kandidaten in A.
+
+Lade für diese M die Original-Vektoren und reranke exakt mit Cosine (oder L2).
+
+Gib Top-k aus.
+
+Warum gut? ANN + PCA erfüllt die Speed/ANN-Anforderung, Reranking mit Originalen sichert Qualität. (Genau diese Kombi ist in den Projekt-Hinweisen vorgesehen: ANN + mehrere Metriken/fusionieren ist ausdrücklich erlaubt/erwünscht. )
+
+Kurz-Pseudo:
+
+I_pca = HNSW.fit(pca(X_norm))
+cands = I_pca.search(pca(q_norm), M)          # schnell
+scores = cosine(X_norm[cands], q_norm)        # exakt im Originalraum
+topk = argsort(scores)[-k:][::-1]
+
+
+(→ Cosine bleibt die Default-Metrik für Embeddings. )
+
+2) Score-Fusion aus beiden Räumen
+
+Berechne zwei Scores pro Kandidat:
+
+𝑠
+full
+=
+cos
+⁡
+(
+𝑥
+,
+𝑞
+)
+s
+full
+	​
+
+=cos(x,q) im Originalraum,
+
+𝑠
+pca
+=
+cos
+⁡
+(
+𝑊
+𝑥
+,
+𝑊
+𝑞
+)
+s
+pca
+	​
+
+=cos(Wx,Wq) im PCA-Raum.
+
+Fusion: 
+𝑠
+=
+𝑤
+1
+ 
+𝑠
+full
++
+𝑤
+2
+ 
+𝑠
+pca
+s=w
+1
+	​
+
+s
+full
+	​
+
++w
+2
+	​
+
+s
+pca
+	​
+
+ (z. B. 
+𝑤
+1
+=
+0.7
+,
+𝑤
+2
+=
+0.3
+w
+1
+	​
+
+=0.7,w
+2
+	​
+
+=0.3).
+Alternativ Reciprocal Rank Fusion (robust ohne Kalibrierung).
+
+Vorteil: nutzt Robustheit der PCA (Rauschreduktion) + Feinauflösung der Originale. (Das Kombinieren mehrerer Metriken ist im Projekt optional vorgeschlagen. )
+
+3) Doppel-Index + Merge
+
+Baue zwei ANN-Indizes (HNSW auf PCA und HNSW auf Original).
+
+Suche parallel, vereinige Kandidaten 
+𝐶
+=
+𝐶
+pca
+∪
+𝐶
+full
+C=C
+pca
+	​
+
+∪C
+full
+	​
+
+ und reranke exakt im Originalraum.
+
+Sinnvoll, wenn du manchmal feine Texturen/Formen brauchst, die PCA stärker abklemmt.
+
+4) IVF-PQ/OPQ + Refinement
+
+Sehr große N: komprimiert suchen (IVF-PQ, ggf. OPQ), dann exakt nachrechnen mit den Original-Vektoren der Trefferliste.
+
+Klassisches FAISS-Setup, passt zur „ANN verwenden“-Anforderung.
+
+Praktische Tipps
+
+Speicherlayout:
+– Halte eine stapelte Matrix der Original-Embeddings (float32/float16, L2-normiert) für schnelles Reranking; die .npy-pro-Bild kannst du für die Top-M auch „on demand“ laden, aber schneller ist ein zusammengefasstes Array. (Embeddings sind die „passende Form“, auf der Distanzmaße arbeiten. )
+
+Normalisieren: vor Cosine immer L2-Norm (auch nach PCA).
+
+Metrik-Mix: Du kannst zusätzlich Farbhistogramm/Hash in die Fusion geben (z. B. 
+𝑠
+=
+0.7
+ 
+𝑠
+emb
++
+0.2
+ 
+𝑠
+color
++
+0.1
+ 
+𝑠
+hash
+s=0.7s
+emb
+	​
+
++0.2s
+color
+	​
+
++0.1s
+hash
+	​
+
+). Genau diese „3+ Similarities“/Kombination ist Teil der Aufgabenstellung.
+
+Failover-Logik: Wenn der beste PCA-Score < Schwelle oder die Top-Scores „flat“ sind, erhöhe M oder gehe direkt auf den exakten Vollraum.
+
+Empfehlung (kurz & machbar)
+
+PCA-HNSW (M≈200–1000) → Original-Cosine Rerank (Top-k).
+
+Optional Score-Fusion 
+𝑠
+=
+0.7
+ 
+𝑠
+full
++
+0.3
+ 
+𝑠
+pca
+s=0.7s
+full
+	​
+
++0.3s
+pca
+	​
+
+.
+So bekommst du die Speed-Vorteile von PCA/ANN und die Präzision der Original-Vektoren – genau im Sinne der Projektanforderungen.

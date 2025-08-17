@@ -4,13 +4,14 @@ import matplotlib.pyplot as plt
 
 # 1) Verbindung öffnen (pfad anpassen)
 conn = sqlite3.connect(r"C:\BIG_DATA\data\database.db")
-
+umap_x_col = "umap_y"
+umap_y_col = "umap_x"
 # 2) Alle Teile laden und zusammenführen
 tables = [f"image_features_part_{i}" for i in range(1, 6)]
 dfs = []
 for tbl in tables:
     df_part = pd.read_sql_query(
-        f"SELECT umap_x AS x, umap_y AS y FROM {tbl}",
+        f"SELECT {umap_x_col} AS x, {umap_y_col} AS y FROM {tbl}",
         conn
     )
     dfs.append(df_part)

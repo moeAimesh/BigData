@@ -1,3 +1,5 @@
+import argparse
+import json
 import sqlite3
 import numpy as np
 from typing import List, Tuple, Dict, Any, Optional, Union
@@ -47,7 +49,7 @@ def _column_exists(cur: sqlite3.Cursor, table: str, col: str) -> bool:
     cur.execute(f"PRAGMA table_info({table})")
     return any(row[1] == col for row in cur.fetchall())
 
-# ---------- Query-aware Gewichtung (Variante 1) ----------
+# ---------- Query-aware Gewichtung ----------
 def _softmax(x, temp=6.0) -> np.ndarray:
     x = np.asarray(x, dtype=np.float64)
     x = x - x.max()
@@ -153,7 +155,7 @@ def search_by_hash_voting_multitables(
     PATHS = np.concatenate(meta_paths)
     TABLES = np.array(meta_tables, dtype=object)
 
-    # Normierung (64/128/256) – Hash-Bits des Queries vs. DB-Max
+    # Normierung (64/128/256)
     normA = _bit_norm(int(q_ahash).bit_length(), int(A.max()))
     normD = _bit_norm(int(q_dhash).bit_length(), int(D.max()))
     normP = _bit_norm(int(q_phash).bit_length(), int(P.max()))
@@ -210,21 +212,35 @@ def compute_query_hashes(path: str, hash_size: int = 8) -> Tuple[int, int, int]:
     ph = imagehash.phash(img,       hash_size=hash_size)
     return int(str(ah), 16), int(str(dh), 16), int(str(ph), 16)
 
-# ---------- Minimalbeispiel ----------
-if __name__ == "__main__":
-    # Beispielpfade anpassen:
-    QUERY_IMG = r"Z:\CODING\UNI\BIG_DATA\data\TEST_IMAGES\ga-traisen-katze-emma-am-9937-scaled.jpg"
-    DB_PATH   = r"C:\BIG_DATA\data\database.db"
+# ---------- CLI ----------
+def parse_args():
+    p = argparse.ArgumentParser(
+        description="Hash-basierte Bildsuche (aHash/dHash/pHash) über mehrere Tabellen."
+    )
+    p.add_argument("--db", dest="db_path", required=True, help="Pfad zur SQLite-DB")
+    p.add_argument("--QUERY_IMG", dest="query_img", required=True, help="Pfad zum Query-Bild")
+    p.add_argument("--final_k", dest="final_k", type=int, default=6, help="Anzahl der finalen Treffer")
+    return p.parse_args()
 
-    q_ah, q_dh, q_ph = compute_query_hashes(QUERY_IMG)
+if __name__ == "__main__":
+    args = parse_args()
+
+    # Query-Hashes berechnen
+    q_ah, q_dh, q_ph = compute_query_hashes(args.query_img)
+
+    # Suche (nur die gewünschten Flags; Rest intern konfiguriert)
     results, w = search_by_hash_voting_multitables(
-        db_path=DB_PATH,
+        db_path=args.db_path,
         q_ahash=q_ah, q_dhash=q_dh, q_phash=q_ph,
-        weights="auto",          # <-- dynamische Gewichte
-        topk_per_hash=300,
-        final_k=6,
+        weights="auto",          # dynamische, query-abhängige Gewichte
+        topk_per_hash=300,       # intern
+        final_k=args.final_k,
         return_weights=True
     )
-    print("Gewichte (a,d,p):", w)
-    for r in results:
-        print(r)
+
+    print("Gewichte (a,d,p):", tuple(round(x, 4) for x in w))
+    print(json.dumps(results, ensure_ascii=False, indent=2))
+
+
+
+#python src/similarity/hash.py --db "C:\BIG_DATA\data\database.db" --QUERY_IMG "Z:\CODING\UNI\BIG_DATA\data\TEST_IMAGES\ga-traisen-katze-emma-am-9937-scaled.jpg" --final_k 6

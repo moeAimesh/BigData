@@ -22,13 +22,22 @@ from joblib import load
 import hnswlib
 import matplotlib.pyplot as plt
 
-# ===================== EXTERNAL (dein Feature-Extractor) =====================
-# Wir nutzen *deinen* extract_embeddings – wichtig, weil dort die "zweite" /255 + ImageNet-Norm passiert,
-# so wie in deiner DB-Pipeline.
+# ===================== EXTERNAL (Feature-Extractor) =====================
+
+# in src/similarity/embedding.py
 try:
-    from embedding_vec import extract_embeddings
+    # 1) wenn embedding_vec.py im gleichen Ordner liegt: src/similarity/embedding_vec.py
+    from .embedding_vec import extract_embeddings
 except ImportError:
-    raise ImportError("Konnte 'embedding_vec.extract_embeddings' nicht importieren. Stelle sicher, dass es im PYTHONPATH liegt.")
+    try:
+        # 2) wenn es eine Ebene höher liegt: src/embedding_vec.py
+        from ..embedding_vec import extract_embeddings
+    except Exception as e:
+        raise ImportError(
+            "Konnte 'extract_embeddings' nicht importieren. "
+            "Lege embedding_vec.py entweder in 'src/similarity/' (bevorzugt) "
+            "oder in 'src/' ab und nutze die relativen Importe wie oben."
+        ) from e
 
 # ===================== KONFIG =====================
 # Modelle
@@ -68,9 +77,9 @@ UMAP_COLS = {
 
 # Such-Umfang
 TOP_K      = 5
-X_FACTOR   = 40    # X ≈ 40*k
-Y_FACTOR   = 8     # Y ≈ 8*k
-M_FACTOR   = 2     # M ≈ 2*k
+X_FACTOR   = 160   # X ≈ 40*k
+Y_FACTOR   = 32    # Y ≈ 8*k
+M_FACTOR   = 8    # M ≈ 2*k
 
 # Plot-Schalter
 PLOT_ENABLED   = False

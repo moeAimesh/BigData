@@ -1,0 +1,58 @@
+         980584 function calls (963571 primitive calls) in 2.614 seconds
+
+   Ordered by: cumulative time
+   List reduced from 3706 to 50 due to restriction <50>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       97    0.002    0.000    4.455    0.046 __init__.py:1(<module>)
+        1    0.001    0.001    2.615    2.615 embedding_reranking.py:542(search_image)
+        1    0.000    0.000    1.216    1.216 embedding_reranking.py:287(__init__)
+        1    0.000    0.000    1.215    1.215 numpy_pickle.py:674(load)
+        1    0.000    0.000    1.215    1.215 numpy_pickle.py:613(_unpickle)
+        1    0.000    0.000    1.215    1.215 pickle.py:1187(load)
+        5    0.000    0.000    1.214    0.243 pickle.py:1533(load_stack_global)
+        5    0.000    0.000    1.214    0.243 pickle.py:1572(find_class)
+    193/5    0.001    0.000    1.214    0.243 {built-in method builtins.__import__}
+    859/1    0.005    0.000    1.214    1.214 <frozen importlib._bootstrap>:1165(_find_and_load)
+    831/1    0.004    0.000    1.214    1.214 <frozen importlib._bootstrap>:1120(_find_and_load_unlocked)
+   1945/1    0.001    0.000    1.214    1.214 <frozen importlib._bootstrap>:233(_call_with_frames_removed)
+    811/2    0.003    0.000    1.212    0.606 <frozen importlib._bootstrap>:666(_load_unlocked)
+    671/2    0.002    0.000    1.212    0.606 <frozen importlib._bootstrap_external>:934(exec_module)
+    987/2    0.027    0.000    1.212    0.606 {built-in method builtins.exec}
+       10    0.000    0.000    1.088    0.109 base.py:1(<module>)
+        1    0.000    0.000    1.058    1.058 _chunking.py:1(<module>)
+        1    0.000    0.000    1.057    1.057 _param_validation.py:1(<module>)
+        1    0.000    0.000    1.055    1.055 validation.py:1(<module>)
+        1    0.000    0.000    1.048    1.048 _array_api.py:1(<module>)
+        1    0.000    0.000    1.019    1.019 fixes.py:1(<module>)
+        1    0.000    0.000    0.717    0.717 embedding_reranking.py:367(build_index_if_needed)
+        1    0.000    0.000    0.644    0.644 embedding_reranking.py:305(load)
+        1    0.001    0.001    0.518    0.518 embedding_reranking.py:228(_apply_fusion_and_mmr)
+ 1099/740    0.002    0.000    0.509    0.001 <frozen importlib._bootstrap>:1207(_handle_fromlist)
+        1    0.461    0.461    0.461    0.461 {built-in method hnswlib.load_index}
+        1    0.000    0.000    0.441    0.441 _stats_py.py:1(<module>)
+       10    0.000    0.000    0.371    0.037 embedding_reranking.py:186(_lpips_dist)
+        1    0.000    0.000    0.366    0.366 lpips.py:23(__init__)
+        1    0.000    0.000    0.359    0.359 pretrained_networks.py:57(__init__)
+        1    0.000    0.000    0.358    0.358 _utils.py:130(wrapper)
+        1    0.000    0.000    0.358    0.358 _utils.py:171(inner_wrapper)
+        1    0.000    0.000    0.358    0.358 alexnet.py:80(alexnet)
+        8    0.000    0.000    0.299    0.037 api.py:1(<module>)
+      671    0.006    0.000    0.286    0.000 <frozen importlib._bootstrap_external>:1007(get_code)
+        1    0.000    0.000    0.258    0.258 alexnet.py:18(__init__)
+       13    0.000    0.000    0.255    0.020 init.py:456(kaiming_uniform_)
+       21    0.254    0.012    0.254    0.012 {method 'uniform_' of 'torch._C.TensorBase' objects}
+        3    0.000    0.000    0.243    0.081 linear.py:93(__init__)
+        3    0.000    0.000    0.242    0.081 linear.py:114(reset_parameters)
+      821    0.007    0.000    0.236    0.000 <frozen importlib._bootstrap>:1054(_find_spec)
+      821    0.001    0.000    0.222    0.000 <frozen importlib._bootstrap_external>:1499(find_spec)
+      821    0.002    0.000    0.221    0.000 <frozen importlib._bootstrap_external>:1467(_get_spec)
+     2787    0.002    0.000    0.206    0.000 <frozen importlib._bootstrap_external>:140(_path_stat)
+     2795    0.205    0.000    0.205    0.000 {built-in method nt.stat}
+      926    0.009    0.000    0.202    0.000 <frozen importlib._bootstrap_external>:1607(find_spec)
+        3    0.000    0.000    0.184    0.061 generic.py:1(<module>)
+        1    0.183    0.183    0.183    0.183 {built-in method _pickle.load}
+        1    0.000    0.000    0.179    0.179 distributions.py:1(<module>)
+      671    0.002    0.000    0.153    0.000 <frozen importlib._bootstrap_external>:1127(get_data)
+
+
